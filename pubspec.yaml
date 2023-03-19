@@ -10,9 +10,66 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  async:
+  bloc:
+  bloc_concurrency:
+  cloud_firestore:
+  collection:
+  debounce_throttle:
+  directed_graph:
+  fake_cloud_firestore:
+  firebase_core:
+  freezed_annotation:
+  json_annotation: ^4.8.0
+  rxdart:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
+  bloc_test:
+  build_runner:
+  firebase_auth:
+  flutter_lints: ^2.0.1
+  freezed:
+  json_serializable:
+  matcher:
   mocktail: ^0.3.0
-  very_good_analysis: ^4.0.0
+  test:
+#  core_event_source_test:
+
+index_generator:
+  exclude:
+    - '**.*.dart'
+  indexes:
+    - path: lib
+      name: common
+      include:
+        - src/common
+    - path: lib
+      name: entry
+      include:
+        - src/entry
+    - path: lib
+      name: event_source
+      include:
+        - src/event_source
+    - path: lib
+      name: event_sourced_behavior
+      include:
+        - src/event_sourced_behavior
+
+    - path: lib
+      name: internal
+      include:
+        - src/internal
+
+    - path: test
+      name: test_util
+      include:
+        - util
+    - path: test
+      name: test_doubles
+      include:
+        - test_doubles
