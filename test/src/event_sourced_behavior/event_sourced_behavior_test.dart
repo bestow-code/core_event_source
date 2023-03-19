@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 
 main() {
   // late EventSourcedBehavior eventSourcedBehavior;
-  setUp((){
-   // eventSourcedBehavior = EventSourcedBehavior();
+  setUp(() {
+    // eventSourcedBehavior = EventSourcedBehavior();
   });
   group('', () {
     test('', () {});

@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 
 main() {
   // late SourceReference sourceReference;
-  setUp((){
-   // sourceReference = SourceReference();
+  setUp(() {
+    // sourceReference = SourceReference();
   });
   group('', () {
     test('', () {});

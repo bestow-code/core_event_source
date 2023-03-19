@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 
 main() {
   // late CommandHandler commandHandler;
-  setUp((){
-   // commandHandler = CommandHandler();
+  setUp(() {
+    // commandHandler = CommandHandler();
   });
   group('', () {
     test('', () {});

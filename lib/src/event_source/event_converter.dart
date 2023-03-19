@@ -1,3 +1,1 @@
-class EventConverter {
-  
-}
+class EventConverter {}

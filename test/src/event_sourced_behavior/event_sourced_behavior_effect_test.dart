@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 
 main() {
   // late EventSourcedBehaviorEffect eventSourcedBehaviorEffect;
-  setUp((){
-   // eventSourcedBehaviorEffect = EventSourcedBehaviorEffect();
+  setUp(() {
+    // eventSourcedBehaviorEffect = EventSourcedBehaviorEffect();
   });
   group('', () {
     test('', () {});

@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 
 main() {
   // late ValueImpl valueImpl;
-  setUp((){
-   // valueImpl = ValueImpl();
+  setUp(() {
+    // valueImpl = ValueImpl();
   });
   group('', () {
     test('', () {});

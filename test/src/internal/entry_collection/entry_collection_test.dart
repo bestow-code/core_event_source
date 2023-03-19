@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 
 main() {
   // late EntryCollection entryCollection;
-  setUp((){
-   // entryCollection = EntryCollection();
+  setUp(() {
+    // entryCollection = EntryCollection();
   });
   group('', () {
     test('', () {});

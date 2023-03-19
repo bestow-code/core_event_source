@@ -2,7 +2,6 @@ import 'package:core_event_source/entry.dart';
 import 'package:core_event_source/internal.dart';
 import 'package:rxdart/rxdart.dart';
 
-
 class DataAdapterFirestore<Event> extends DataAdapter<Event> {
   final FirestoreEntryStore<Event> dataStore;
 

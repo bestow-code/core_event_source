@@ -1,3 +1,1 @@
-class MainRefUpdateDispatcherImpl {
-  
-}
+class MainRefUpdateDispatcherImpl {}

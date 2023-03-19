@@ -111,8 +111,8 @@ main() {
                 'a': {},
                 'b': {'a'}
               },
-              mainEntryRefStream2: (entries) =>
-                  Stream.fromIterable([const EntryRef('a'), const EntryRef('b')]));
+              mainEntryRefStream2: (entries) => Stream.fromIterable(
+                  [const EntryRef('a'), const EntryRef('b')]));
         },
         build: () => entryCollection,
         act: (entryCollection) => entryCollection,
@@ -163,8 +163,8 @@ main() {
                   'a': {},
                   'b': {'a'}
                 },
-                mainEntryRefStream2: (entries) =>
-                    Stream.fromIterable([const EntryRef('a'), const EntryRef('c')]));
+                mainEntryRefStream2: (entries) => Stream.fromIterable(
+                    [const EntryRef('a'), const EntryRef('c')]));
           },
           build: () => entryCollection,
           verify: (entryCollection) {

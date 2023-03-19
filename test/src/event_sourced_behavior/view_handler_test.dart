@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 
 main() {
   // late ViewHandler viewHandler;
-  setUp((){
-   // viewHandler = ViewHandler();
+  setUp(() {
+    // viewHandler = ViewHandler();
   });
   group('', () {
     test('', () {});

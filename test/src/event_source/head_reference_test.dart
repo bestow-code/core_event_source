@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 
 main() {
   // late HeadReference headReference;
-  setUp((){
-   // headReference = HeadReference();
+  setUp(() {
+    // headReference = HeadReference();
   });
   group('', () {
     test('', () {});

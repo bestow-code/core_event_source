@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 
 main() {
   // late EventSource eventSource;
-  setUp((){
-   // eventSource = EventSource();
+  setUp(() {
+    // eventSource = EventSource();
   });
   group('', () {
     test('', () {});
