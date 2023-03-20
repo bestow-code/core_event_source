@@ -39,7 +39,7 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
   }
 
   static Future<EventSource<Command, View>> from<Command, Event, State, View>(
-      {required InMemoryDataStore<Event> dataStore,
+      {required DataStore<Event> dataStore,
       required EventSourcedBehavior<Command, Event, State, View> behavior,
       EntryFactory<Event>? entryFactory}) async {
     entryFactory ??= EntryFactory<Event>.randomRefCreatedNow();

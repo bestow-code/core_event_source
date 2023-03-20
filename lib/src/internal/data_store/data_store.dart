@@ -1,10 +1,10 @@
 import '../../../entry.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import '../../../internal.dart';
 
 abstract class DataStore<Event>
-    with DataStoreRead<Event>, DataStoreWrite<Event> {}
+    with DataStoreRead<Event>, DataStoreWrite<Event> {
+  const DataStore._();
+}
 
 abstract class DataStoreRead<Event> {
   /// The current [EntryRef] from the headRef.
