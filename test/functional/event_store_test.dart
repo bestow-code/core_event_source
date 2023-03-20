@@ -1,6 +1,6 @@
 // import 'package:core_event_source/event_source.dart';
 // import 'package:core_event_source/event_sourced_behavior.dart';
-// import 'package:flutter_test/flutter_test.dart';
+// import 'package:test/test.dart';
 //
 // import '../util/event_sourced_behavior_fake.dart';
 // import '../util/fake_firebase_firestore.dart';

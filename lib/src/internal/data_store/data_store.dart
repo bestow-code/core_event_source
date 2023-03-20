@@ -1,19 +1,19 @@
 import '../../../entry.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'data_adapter.freezed.dart';
+import '../../../internal.dart';
 
-abstract class DataAdapter<Event>
-    with DataReadAdapter<Event>, DataWriteAdapter<Event> {}
+abstract class DataStore<Event>
+    with DataStoreRead<Event>, DataStoreWrite<Event> {}
 
-abstract class DataReadAdapter<Event> {
+abstract class DataStoreRead<Event> {
   /// The current [EntryRef] from the headRef.
   // Future<EntryRef?> get headEntryRefMaybe;
   Future<EntryRef?> get headEntryRef;
 
   /// The current [EntryRef] from the mainRef.
-  // Future<EntryRef?> get mainEntryRefMaybe;
   Future<EntryRef> get mainEntryRef;
+  Future<EntryRef?> get mainEntryRefMaybe;
 
   /// The initial entry
   Future<Entry<Event>> get rootEntry;
@@ -25,9 +25,9 @@ abstract class DataReadAdapter<Event> {
   Stream<Iterable<EntrySnapshot<Event>>> get entrySnapshotsStream;
 }
 
-abstract class DataWriteAdapter<Event> {
+abstract class DataStoreWrite<Event> {
   /// Transactional creation of initial entry and main entry ref.
-  Future<void> initialize(Entry<Event> initialEntryIfEmpty);
+  Future<void> initialize(Entry<Event> rootEntryIfEmpty);
 
   /// Execute a batch-write of the given [Entry], an [EntryRef], and an [EntryRefLog]
   Future<void> appendHeadEntry(Entry<Event> entry);
@@ -42,10 +42,4 @@ abstract class DataWriteAdapter<Event> {
   ///
   /// Throws if the current [EntryRef] is not equal to [previous].
   Future<void> updateMainEntryRef(EntryRef previous, EntryRef next);
-}
-
-@freezed
-class EntrySnapshot<Event> with _$EntrySnapshot<Event> {
-  factory EntrySnapshot(Entry<Event> entry, {required bool isPending}) =
-      _EntrySnapshot;
 }

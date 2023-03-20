@@ -13,13 +13,13 @@ class Entry<Event> with _$Entry<Event>, Comparable<Entry<Event>> {
   const Entry._();
 
   factory Entry.epoch() =>
-      Entry.initial(createdAt: DateTime.fromMillisecondsSinceEpoch(0));
+      Entry.newRoot(createdAt: DateTime.fromMillisecondsSinceEpoch(0));
 
-  factory Entry.initial({required DateTime createdAt}) => Entry(
+  factory Entry.newRoot({DateTime? createdAt}) => Entry(
       ref: EntryRef.root,
       refs: const Iterable.empty(),
       events: const Iterable.empty(),
-      createdAt: createdAt);
+      createdAt: createdAt ?? DateTime.now());
 
   factory Entry({
     required EntryRef ref,

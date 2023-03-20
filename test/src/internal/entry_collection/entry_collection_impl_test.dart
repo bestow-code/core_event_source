@@ -3,8 +3,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:core_event_source/common.dart';
 import 'package:core_event_source/entry.dart';
 import 'package:core_event_source/internal.dart';
-import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 import 'package:test/test.dart';
+
+import '../../../util/logging.dart';
 
 // class StreamMock<T> extends Mock implements Stream<T> {}
 // a-b-c-f
@@ -28,8 +30,11 @@ Map<EntryRef, Entry<Event>> buildTestEntries<Event>(
             ref: EntryRef(ref), refs: refs.map(EntryRef.new), events: []),
       ),
     );
+final logger = Logger('test111');
 
 main() {
+  initializeDebugLogging();
+  logger.fine('hello world');
   late EntryCollectionImpl<Event> entryCollection;
 
   late Stream<Iterable<EntrySnapshot<Event>>> entrySnapshotsStream;
@@ -73,7 +78,11 @@ main() {
     entryCollection = EntryCollectionImpl.initial(
       rootEntry,
       mainEntryRef,
-      onError: (e, s) => debugPrintStack(label: e.toString(), stackTrace: s),
+      onError: (e, s) {
+        print(e.toString());
+        print(s.toString());
+        // debugPrintStack(label: e.toString(), stackTrace: s);
+      },
       mainEntryRefStream: mainEntryRefStream,
       entrySnapshotsStream: entrySnapshotsStream,
     );
@@ -151,7 +160,7 @@ main() {
           },
           build: () => entryCollection,
           verify: (entryCollection) {
-            expect(entryCollection.buildMerge(mainEntryRef),
+            expect(entryCollection.buildMergeHeadEffect(mainEntryRef),
                 HeadEffect<Event>.none());
           });
       blocTest('mainEntryRef unknown',
@@ -168,7 +177,7 @@ main() {
           },
           build: () => entryCollection,
           verify: (entryCollection) {
-            expect(entryCollection.buildMerge(const EntryRef('b')),
+            expect(entryCollection.buildMergeHeadEffect(const EntryRef('b')),
                 HeadEffect<Event>.none());
           });
       blocTest('headEntryRef unknown',
@@ -184,7 +193,7 @@ main() {
           },
           build: () => entryCollection,
           verify: (entryCollection) {
-            expect(entryCollection.buildMerge(const EntryRef('c')),
+            expect(entryCollection.buildMergeHeadEffect(const EntryRef('c')),
                 HeadEffect<Event>.none());
           });
       blocTest('headEntryRef and mainEntryRef diverged',
@@ -202,7 +211,7 @@ main() {
           build: () => entryCollection,
           verify: (entryCollection) {
             expect(
-                entryCollection.buildMerge(const EntryRef('c')),
+                entryCollection.buildMergeHeadEffect(const EntryRef('c')),
                 HeadEffect<Event>.reset(const EntryRef('c'), [
                   const EntryRef('a')
                 ], [
@@ -224,7 +233,7 @@ main() {
           build: () => entryCollection,
           verify: (entryCollection) {
             expect(
-                entryCollection.buildMerge(const EntryRef('a')),
+                entryCollection.buildMergeHeadEffect(const EntryRef('a')),
                 HeadEffect<Event>.forward(
                   const EntryRef('a'),
                   [entryCollection.state.entries[const EntryRef('b')]!],
@@ -243,7 +252,7 @@ main() {
           },
           build: () => entryCollection,
           verify: (entryCollection) {
-            expect(entryCollection.buildMerge(const EntryRef('b')),
+            expect(entryCollection.buildMergeHeadEffect(const EntryRef('b')),
                 HeadEffect<Event>.none());
           });
     });

@@ -12,7 +12,7 @@ class FakeBehavior
         EventSourcedBehavior<FakeCommand, FakeEvent, FakeState, FakeView> {
   @override
   CommandHandler<FakeCommand, FakeEvent, FakeState> get commandHandler =>
-      (_, __) => EventSourcedBehaviorEffect.persist([{}]);
+      (_, __) => EventSourcedBehaviorEffect<FakeEvent>.persist([{}]);
 
   @override
   StateEventHandler<FakeEvent, FakeState> get eventHandler =>
@@ -29,7 +29,7 @@ class FakeBehavior
       (previous, _) => previous * 2;
 }
 
-class FakeEventJsonConverter extends JsonEventConverter<FakeEvent> {
-  FakeEventJsonConverter()
-      : super((p0) => p0 as Map<String, dynamic>, (object) => object);
+class FakeEventJsonConverter<Event extends JsonObject>
+    extends JsonEventConverter<Event> {
+  FakeEventJsonConverter() : super((p0) => p0 as Event, (object) => object);
 }

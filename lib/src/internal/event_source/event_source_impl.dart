@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart' hide EventHandler;
 import 'package:core_event_source/event_source.dart';
 import 'package:core_event_source/internal.dart';
+import 'package:core_event_source/src/internal/data_store/in_memory_data_store.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../entry.dart';
@@ -38,28 +39,27 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
   }
 
   static Future<EventSource<Command, View>> from<Command, Event, State, View>(
-      {required DataAdapterFirestore<Event> adapter,
+      {required InMemoryDataStore<Event> dataStore,
       required EventSourcedBehavior<Command, Event, State, View> behavior,
       EntryFactory<Event>? entryFactory}) async {
     entryFactory ??= EntryFactory<Event>.randomRefCreatedNow();
     final initialEntryIfEmpty =
         entryFactory.create(ref: EntryRef.root, refs: [], events: []);
-    await adapter.initialize(initialEntryIfEmpty);
-
+    await dataStore.initialize(initialEntryIfEmpty);
     final dispatcher = HeadEffectDispatcherImpl<Event>();
 
     final journal = JournalImpl(
-      adapter: adapter,
+      adapter: dataStore,
     );
     dispatcher.registerJournal(journal);
 
-    final rootEntry = await adapter.rootEntry;
-    final mainEntryRef = await adapter.mainEntryRef;
+    final rootEntry = await dataStore.rootEntry;
+    final mainEntryRef = await dataStore.mainEntryRef;
     final entryCollection = EntryCollectionImpl.initial(
       rootEntry,
       mainEntryRef,
-      mainEntryRefStream: adapter.mainEntryRefStream,
-      entrySnapshotsStream: adapter.entrySnapshotsStream,
+      mainEntryRefStream: dataStore.mainEntryRefStream,
+      entrySnapshotsStream: dataStore.entrySnapshotsStream,
       onError: dispatcher.propagate,
     );
     dispatcher.registerHandler(entryCollection);
@@ -74,7 +74,7 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
         onError: dispatcher.propagate);
     dispatcher.registerHandler(viewValue);
 
-    final headEntryRef = await adapter.headEntryRef ?? mainEntryRef;
+    final headEntryRef = await dataStore.headEntryRef ?? mainEntryRef;
 
     final initialState = headEntryRef == rootEntry.ref
         ? EventSourceState.ready(headEntryRef)

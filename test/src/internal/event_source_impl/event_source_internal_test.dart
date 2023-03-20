@@ -76,7 +76,7 @@ main() {
                 Stream.fromIterable([MockEntryCollectionState<Event>()]));
             final entry = MockEntry<Event>();
             when(() => entry.ref).thenReturn(ref1);
-            when(() => entryCollection.buildInitial(ref1))
+            when(() => entryCollection.buildInitialHeadEffect(ref1))
                 .thenReturn(HeadEffect.forward(EntryRef.root, [entry]));
             when(() => stateValue.current).thenReturn(1);
             when(() => dispatcher.dispatch(any()))
@@ -202,7 +202,7 @@ main() {
               final updatesMock = UpdatesBlocMock();
               whenListen(updatesMock, Stream.fromIterable([Null]));
               when(() => entryCollection.updates).thenReturn(updatesMock);
-              when(() => entryCollection.buildMerge(EntryRef.root))
+              when(() => entryCollection.buildMergeHeadEffect(EntryRef.root))
                   .thenReturn(HeadEffect.none());
               when(() => dispatcher.dispatch(any()))
                   .thenAnswer((_) async => Null);

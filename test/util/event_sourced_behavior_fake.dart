@@ -1,5 +1,5 @@
 import 'package:core_event_source/event_sourced_behavior.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 class EventSourcedBehaviorFake<Command, Event, State, View> extends Fake
     implements EventSourcedBehavior<Command, Event, State, View> {

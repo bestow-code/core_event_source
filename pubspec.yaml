@@ -5,39 +5,32 @@ publish_to: none
 
 environment:
   sdk: ">=2.19.0 <3.0.0"
-  flutter: 3.7.0
+#  flutter: 3.7.0
 
 dependencies:
-  flutter:
-    sdk: flutter
   async:
   bloc:
   bloc_concurrency:
-  cloud_firestore:
   collection:
   debounce_throttle:
   directed_graph:
-  fake_cloud_firestore:
-  firebase_core:
   freezed_annotation:
   json_annotation: ^4.8.0
   rxdart:
-
+  logging:
+  meta:
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  integration_test:
-    sdk: flutter
   bloc_test:
   build_runner:
-  firebase_auth:
-  flutter_lints: ^2.0.1
+  lints: ^2.0.1
   freezed:
   json_serializable:
   matcher:
   mocktail: ^0.3.0
-  test:
+  given_when_then_unit_test:
+  checks: ^0.2.1
 #  core_event_source_test:
+  melos: ^3.0.0
 
 index_generator:
   exclude:

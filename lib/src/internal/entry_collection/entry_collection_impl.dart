@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 
 import '../../../entry.dart';
 import '../../../internal.dart';
@@ -51,7 +51,7 @@ class EntryCollectionImpl<Event> extends BlocBase<EntryCollectionState<Event>>
   }
 
   @override
-  HeadEffect<Event> buildMerge(EntryRef headEntryRef) =>
+  HeadEffect<Event> buildMergeHeadEffect(EntryRef headEntryRef) =>
       state.buildFollowMainEffect(_initialEntry, headEntryRef);
 
   @override
@@ -82,6 +82,12 @@ class EntryCollectionImpl<Event> extends BlocBase<EntryCollectionState<Event>>
   }
 
   @override
-  HeadEffect<Event> buildInitial(EntryRef headRef) =>
+  HeadEffect<Event> buildInitialHeadEffect(EntryRef headRef) =>
       state.buildInitialHeadEffect(_initialEntry, headRef);
+
+  @override
+  MainRefEffect<Event> buildMainRefEffect(EntryRef headRef) {
+    // TODO: implement buildMainRefEffect
+    throw UnimplementedError();
+  }
 }

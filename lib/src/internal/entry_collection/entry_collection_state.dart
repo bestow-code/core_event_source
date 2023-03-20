@@ -70,6 +70,26 @@ abstract class EntrySnapshotsHandler<Event>
 
 abstract class FollowMainEffectBuilder<Event>
     implements _$EntryCollectionState<Event> {
+  MainRefEffect<Event> buildMainEntryEffect(
+      Entry<Event> rootEntry, EntryRef headEntryRef) {
+    final mainEntry = entries[mainEntryRef];
+    if (mainEntry == null) {
+      return MainRefEffect.none();
+    }
+    final mainToHeadPath = _originPath(mainEntry, headEntryRef);
+
+    if (mainToHeadPath.isEmpty) {
+      return MainRefEffect.none();
+    } else {
+      if (mainToHeadPath.any((element) => pending.contains(element.ref))) {
+        return MainRefEffect.none();
+      } else {
+        return MainRefEffect.forward(
+            previous: mainEntryRef, next: headEntryRef);
+      }
+    }
+  }
+
   HeadEffect<Event> buildInitialHeadEffect(
       Entry<Event> rootEntry, EntryRef headEntryRef) {
     final headEntryPath = _originPath(rootEntry, headEntryRef);

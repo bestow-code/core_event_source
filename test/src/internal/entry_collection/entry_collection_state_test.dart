@@ -2,7 +2,6 @@ import 'package:core_event_source/common.dart';
 import 'package:core_event_source/internal.dart';
 import 'package:core_event_source/entry.dart';
 import 'package:directed_graph/directed_graph.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
@@ -70,7 +69,11 @@ main() {
         mainEntryRefStream: mainRefUpdateStream,
         entrySnapshotsStream:
             entrySnapshotsStream as Stream<Iterable<EntrySnapshot<Event>>>,
-        onError: (e, s) => debugPrintStack(label: e.toString(), stackTrace: s),
+        onError: (e, s) {
+          print(e.toString());
+          print(s.toString());
+          // debugPrintStack(label: e.toString(), stackTrace: s);
+        },
       );
     }
 
@@ -84,7 +87,7 @@ main() {
         final mainEntryRef = initialEntry.ref;
         final collection = buildEntryCollection(initialEntry, mainEntryRef,
             Map.fromEntries(entries.map((e) => MapEntry(e.ref, e))));
-        final effect = collection.buildMerge(headRef);
+        final effect = collection.buildMergeHeadEffect(headRef);
         expect(effect, HeadEffect.none());
       });
     });
@@ -107,7 +110,7 @@ main() {
           const mainEntryRef = refB;
           final collection =
               buildEntryCollection(initialEntry, mainEntryRef, entriesMap);
-          final effect = collection.buildMerge(headRef);
+          final effect = collection.buildMergeHeadEffect(headRef);
           expect(effect, HeadEffect.forward(headRef, [entryB]));
         });
       },
@@ -135,7 +138,7 @@ main() {
           const mainEntryRef = refB;
           final collection =
               buildEntryCollection(initialEntry, mainEntryRef, entriesMap);
-          final effect = collection.buildMerge(headRef);
+          final effect = collection.buildMergeHeadEffect(headRef);
           expect(effect, HeadEffect.reset(headRef, [refA], [entryB, entryC]));
         },
         skip: true,
@@ -159,7 +162,7 @@ main() {
           const mainEntryRef = refB;
           final collection =
               buildEntryCollection(initialEntry, mainEntryRef, entriesMap);
-          final effect = collection.buildMerge(headRef);
+          final effect = collection.buildMergeHeadEffect(headRef);
           expect(effect, HeadEffect.none());
         },
         skip: true,

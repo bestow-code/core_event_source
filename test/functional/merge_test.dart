@@ -1,5 +1,5 @@
 import 'package:core_event_source/common.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 typedef Command = JsonObject;
 typedef Event = JsonObject;
