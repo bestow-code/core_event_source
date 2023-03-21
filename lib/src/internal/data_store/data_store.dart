@@ -1,9 +1,9 @@
 import '../../../entry.dart';
 import '../../../internal.dart';
 
-abstract class DataStore<Event>
+abstract class CoreDataStore<Event>
     with DataStoreRead<Event>, DataStoreWrite<Event> {
-  const DataStore._();
+  const CoreDataStore._();
 }
 
 abstract class DataStoreRead<Event> {

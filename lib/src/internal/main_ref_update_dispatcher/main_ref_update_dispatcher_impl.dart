@@ -1,37 +1,45 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:core_event_source/entry.dart';
 import 'package:core_event_source/internal.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../common.dart';
+
 part 'main_ref_update_dispatcher_impl.freezed.dart';
 
-class MainRefUpdateDispatcherImpl
-    extends Bloc<MainRefUpdateDispatcherEvent, MainRefUpdateDispatcherState> {
-  final Journal _journal;
+class MainRefUpdateDispatcherImpl<Command, Event, State>
+    extends Bloc<MainRefUpdateDispatcherEvent, MainRefEffect<Event>> {
+  final Journal<Event> _journal;
+  final EventSourceInternal<Command, Event, State> _source;
+  final EntryCollection<Event> _entryCollection;
 
-  final Stream<EventSourceState> _headSource;
-  final EntryCollection _entryCollection;
-
-  MainRefUpdateDispatcherImpl(super.initialState, this._journal,
-      this._headSource, this._entryCollection) {
-    _entryCollection.updates.stream.listen((_) {
-      _check(state.head);
+  MainRefUpdateDispatcherImpl(
+      super.initialState, this._journal, this._source, this._entryCollection) {
+    on<MainRefUpdateDispatcherEventUpdate>((event, emit) async {
+      _source.state.mapOrNull(ready: (ready) async {
+        final effect = _entryCollection.buildMainRefEffect(ready.entryRef);
+        emit(effect);
+      });
+    }, transformer: restartable());
+    _entryCollection.stream.listen((_) {
+      add(MainRefUpdateDispatcherEvent.update());
     });
-    _headSource.listen((event) {
-      event.mapOrNull(ready: (ready) => _check(ready.entryRef));
+    _source.stream.listen((event) {
+      event.mapOrNull(ready: (ready) {
+        add(MainRefUpdateDispatcherEvent.update());
+      });
     });
-  }
-
-  void _check(EntryRef headRef) async {
-    final effect = _entryCollection.buildMainRefEffect(headRef);
-    await _journal.applyMainRefEffect(effect);
+    stream.listen((effect) async {
+      await _journal.applyMainRefEffect(effect);
+    });
   }
 }
 
 @freezed
 class MainRefUpdateDispatcherEvent with _$MainRefUpdateDispatcherEvent {
-  factory MainRefUpdateDispatcherEvent.headRefUpdate(
-      {required EntryRef entryRef}) = MainRefUpdateDispatcherEventHeadRefUpdate;
+  factory MainRefUpdateDispatcherEvent.update() =
+      MainRefUpdateDispatcherEventUpdate;
 }
 
 @freezed

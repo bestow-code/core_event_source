@@ -1,10 +1,10 @@
 import '../../../internal.dart';
 
 class JournalImpl<Event> implements Journal<Event> {
-  final DataStore<Event> _adapter;
+  final CoreDataStore<Event> _adapter;
 
   JournalImpl({
-    required DataStore<Event> adapter,
+    required CoreDataStore<Event> adapter,
   }) : _adapter = adapter;
 
   @override

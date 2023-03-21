@@ -6,7 +6,7 @@ import 'package:core_event_source/src/entry/entry.dart';
 import 'package:core_event_source/src/entry/entry_ref.dart';
 import 'package:rxdart/rxdart.dart';
 
-class InMemoryDataStore<Event> implements DataStore<Event> {
+class InMemoryDataStore<Event> implements CoreDataStore<Event> {
   final String _headRefId;
   final InMemoryDataStoreInternal<Event> _internal;
 

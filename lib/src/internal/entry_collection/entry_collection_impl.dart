@@ -8,7 +8,7 @@ import '../../../internal.dart';
 
 class EntryCollectionImpl<Event> extends BlocBase<EntryCollectionState<Event>>
     implements EntryCollection<Event> {
-  final Entry<Event> _initialEntry;
+  final Entry<Event> _rootEntry;
   final Stream<Iterable<EntrySnapshot<Event>>> _entrySnapshotsStream;
   final Stream<EntryRef> _mainEntryRefStream;
   final void Function(Object error, StackTrace stackTrace) _onError;
@@ -39,7 +39,7 @@ class EntryCollectionImpl<Event> extends BlocBase<EntryCollectionState<Event>>
     required Stream<Iterable<EntrySnapshot<Event>>> entrySnapshotsStream,
     required void Function(Object error, StackTrace stackTrace) onError,
     required Stream<EntryRef> mainEntryRefStream,
-  })  : _initialEntry = initialEntry,
+  })  : _rootEntry = initialEntry,
         _entrySnapshotsStream = entrySnapshotsStream,
         _onError = onError,
         _mainEntryRefStream = mainEntryRefStream;
@@ -52,7 +52,7 @@ class EntryCollectionImpl<Event> extends BlocBase<EntryCollectionState<Event>>
 
   @override
   HeadEffect<Event> buildMergeHeadEffect(EntryRef headEntryRef) =>
-      state.buildFollowMainEffect(_initialEntry, headEntryRef);
+      state.buildFollowMainEffect(_rootEntry, headEntryRef);
 
   @override
   void apply(HeadEffect<Event> effect) =>
@@ -83,11 +83,10 @@ class EntryCollectionImpl<Event> extends BlocBase<EntryCollectionState<Event>>
 
   @override
   HeadEffect<Event> buildInitialHeadEffect(EntryRef headRef) =>
-      state.buildInitialHeadEffect(_initialEntry, headRef);
+      state.buildInitialHeadEffect(_rootEntry, headRef);
 
   @override
   MainRefEffect<Event> buildMainRefEffect(EntryRef headRef) {
-    // TODO: implement buildMainRefEffect
-    throw UnimplementedError();
+    return state.buildMainEntryEffect(_rootEntry, headRef);
   }
 }

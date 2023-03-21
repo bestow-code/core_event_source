@@ -12,9 +12,6 @@ part 'entry.g.dart';
 class Entry<Event> with _$Entry<Event>, Comparable<Entry<Event>> {
   const Entry._();
 
-  factory Entry.epoch() =>
-      Entry.newRoot(createdAt: DateTime.fromMillisecondsSinceEpoch(0));
-
   factory Entry.newRoot({DateTime? createdAt}) => Entry(
       ref: EntryRef.root,
       refs: const Iterable.empty(),

@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart' hide EventHandler;
 import 'package:core_event_source/event_source.dart';
 import 'package:core_event_source/internal.dart';
-import 'package:core_event_source/src/internal/data_store/in_memory_data_store.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../entry.dart';
@@ -28,30 +27,20 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
   @override
   void execute(Iterable<Command> commands) => _internal.execute(commands);
 
-  @override
-  void pause() {
-    // TODO: implement pause
-  }
-
-  @override
-  void resume() {
-    // TODO: implement resume
-  }
-
   static Future<EventSource<Command, View>> from<Command, Event, State, View>(
-      {required DataStore<Event> dataStore,
+      {required CoreDataStore<Event> dataStore,
       required EventSourcedBehavior<Command, Event, State, View> behavior,
       EntryFactory<Event>? entryFactory}) async {
     entryFactory ??= EntryFactory<Event>.randomRefCreatedNow();
     final initialEntryIfEmpty =
         entryFactory.create(ref: EntryRef.root, refs: [], events: []);
     await dataStore.initialize(initialEntryIfEmpty);
-    final dispatcher = HeadEffectDispatcherImpl<Event>();
+    final headEffectDispatcher = HeadEffectDispatcherImpl<Event>();
 
     final journal = JournalImpl(
       adapter: dataStore,
     );
-    dispatcher.registerJournal(journal);
+    headEffectDispatcher.registerJournal(journal);
 
     final rootEntry = await dataStore.rootEntry;
     final mainEntryRef = await dataStore.mainEntryRef;
@@ -60,19 +49,19 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
       mainEntryRef,
       mainEntryRefStream: dataStore.mainEntryRefStream,
       entrySnapshotsStream: dataStore.entrySnapshotsStream,
-      onError: dispatcher.propagate,
+      onError: headEffectDispatcher.propagate,
     );
-    dispatcher.registerHandler(entryCollection);
+    headEffectDispatcher.registerHandler(entryCollection);
 
     final stateValue = ValueImpl.initial(
         rootEntry.ref, behavior.initialState, behavior.eventHandler,
-        onError: dispatcher.propagate);
-    dispatcher.registerHandler(stateValue);
+        onError: headEffectDispatcher.propagate);
+    headEffectDispatcher.registerHandler(stateValue);
 
     final viewValue = ValueImpl.initial(
         rootEntry.ref, behavior.initialView, behavior.viewHandler,
-        onError: dispatcher.propagate);
-    dispatcher.registerHandler(viewValue);
+        onError: headEffectDispatcher.propagate);
+    headEffectDispatcher.registerHandler(viewValue);
 
     final headEntryRef = await dataStore.headEntryRef ?? mainEntryRef;
 
@@ -80,21 +69,26 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
         ? EventSourceState.ready(headEntryRef)
         : EventSourceState.initial(headEntryRef);
 
-    final commandProcessor = CommandProcessor(
+    final commandProcessor = CommandProcessor<Command, Event, State>(
         commandHandler: behavior.commandHandler,
         eventHandler: behavior.eventHandler);
 
-    final internal = EventSourceInternal(
+    final internal = EventSourceInternal<Command, Event, State>(
       initialState,
-      dispatcher: dispatcher,
+      dispatcher: headEffectDispatcher,
       commandProcessor: commandProcessor,
       stateValue: stateValue,
       entryCollection: entryCollection,
       onUpdate: entryCollection.stream,
     );
 
-    final source = EventSourceImpl(internal: internal, viewValue: viewValue);
-    dispatcher.registerErrorHandler(source.addError);
+    final source = EventSourceImpl<Command, Event, State, View>(
+        internal: internal, viewValue: viewValue);
+    headEffectDispatcher.registerErrorHandler(source.addError);
+
+    MainRefUpdateDispatcherImpl<Command, Event, State>(
+        MainRefEffect.none(), journal, internal, entryCollection);
+
     entryCollection.start();
 
     return source;

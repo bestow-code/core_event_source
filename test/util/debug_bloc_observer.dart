@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
+import 'package:test/scaffolding.dart';
 
 class DebugBlocObserver extends BlocObserver {
   static void observe() {
@@ -10,7 +13,7 @@ class DebugBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    print('\nBloc.onChange(${bloc.runtimeType}, $change)');
+    printOnFailure('Bloc.onChange(${bloc.runtimeType}, $change)');
   }
 
   @override

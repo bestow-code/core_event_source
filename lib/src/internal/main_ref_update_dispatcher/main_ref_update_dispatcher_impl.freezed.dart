@@ -16,46 +16,38 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MainRefUpdateDispatcherEvent {
-  EntryRef get entryRef => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(EntryRef entryRef) headRefUpdate,
+    required TResult Function() update,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(EntryRef entryRef)? headRefUpdate,
+    TResult? Function()? update,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(EntryRef entryRef)? headRefUpdate,
+    TResult Function()? update,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MainRefUpdateDispatcherEventHeadRefUpdate value)
-        headRefUpdate,
+    required TResult Function(MainRefUpdateDispatcherEventUpdate value) update,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MainRefUpdateDispatcherEventHeadRefUpdate value)?
-        headRefUpdate,
+    TResult? Function(MainRefUpdateDispatcherEventUpdate value)? update,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MainRefUpdateDispatcherEventHeadRefUpdate value)?
-        headRefUpdate,
+    TResult Function(MainRefUpdateDispatcherEventUpdate value)? update,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $MainRefUpdateDispatcherEventCopyWith<MainRefUpdateDispatcherEvent>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -65,10 +57,6 @@ abstract class $MainRefUpdateDispatcherEventCopyWith<$Res> {
           $Res Function(MainRefUpdateDispatcherEvent) then) =
       _$MainRefUpdateDispatcherEventCopyWithImpl<$Res,
           MainRefUpdateDispatcherEvent>;
-  @useResult
-  $Res call({EntryRef entryRef});
-
-  $EntryRefCopyWith<$Res> get entryRef;
 }
 
 /// @nodoc
@@ -81,126 +69,72 @@ class _$MainRefUpdateDispatcherEventCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? entryRef = null,
-  }) {
-    return _then(_value.copyWith(
-      entryRef: null == entryRef
-          ? _value.entryRef
-          : entryRef // ignore: cast_nullable_to_non_nullable
-              as EntryRef,
-    ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $EntryRefCopyWith<$Res> get entryRef {
-    return $EntryRefCopyWith<$Res>(_value.entryRef, (value) {
-      return _then(_value.copyWith(entryRef: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
-abstract class _$$MainRefUpdateDispatcherEventHeadRefUpdateCopyWith<$Res>
-    implements $MainRefUpdateDispatcherEventCopyWith<$Res> {
-  factory _$$MainRefUpdateDispatcherEventHeadRefUpdateCopyWith(
-          _$MainRefUpdateDispatcherEventHeadRefUpdate value,
-          $Res Function(_$MainRefUpdateDispatcherEventHeadRefUpdate) then) =
-      __$$MainRefUpdateDispatcherEventHeadRefUpdateCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({EntryRef entryRef});
-
-  @override
-  $EntryRefCopyWith<$Res> get entryRef;
+abstract class _$$MainRefUpdateDispatcherEventUpdateCopyWith<$Res> {
+  factory _$$MainRefUpdateDispatcherEventUpdateCopyWith(
+          _$MainRefUpdateDispatcherEventUpdate value,
+          $Res Function(_$MainRefUpdateDispatcherEventUpdate) then) =
+      __$$MainRefUpdateDispatcherEventUpdateCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$MainRefUpdateDispatcherEventHeadRefUpdateCopyWithImpl<$Res>
+class __$$MainRefUpdateDispatcherEventUpdateCopyWithImpl<$Res>
     extends _$MainRefUpdateDispatcherEventCopyWithImpl<$Res,
-        _$MainRefUpdateDispatcherEventHeadRefUpdate>
-    implements _$$MainRefUpdateDispatcherEventHeadRefUpdateCopyWith<$Res> {
-  __$$MainRefUpdateDispatcherEventHeadRefUpdateCopyWithImpl(
-      _$MainRefUpdateDispatcherEventHeadRefUpdate _value,
-      $Res Function(_$MainRefUpdateDispatcherEventHeadRefUpdate) _then)
+        _$MainRefUpdateDispatcherEventUpdate>
+    implements _$$MainRefUpdateDispatcherEventUpdateCopyWith<$Res> {
+  __$$MainRefUpdateDispatcherEventUpdateCopyWithImpl(
+      _$MainRefUpdateDispatcherEventUpdate _value,
+      $Res Function(_$MainRefUpdateDispatcherEventUpdate) _then)
       : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? entryRef = null,
-  }) {
-    return _then(_$MainRefUpdateDispatcherEventHeadRefUpdate(
-      entryRef: null == entryRef
-          ? _value.entryRef
-          : entryRef // ignore: cast_nullable_to_non_nullable
-              as EntryRef,
-    ));
-  }
 }
 
 /// @nodoc
 
-class _$MainRefUpdateDispatcherEventHeadRefUpdate
-    implements MainRefUpdateDispatcherEventHeadRefUpdate {
-  _$MainRefUpdateDispatcherEventHeadRefUpdate({required this.entryRef});
-
-  @override
-  final EntryRef entryRef;
+class _$MainRefUpdateDispatcherEventUpdate
+    implements MainRefUpdateDispatcherEventUpdate {
+  _$MainRefUpdateDispatcherEventUpdate();
 
   @override
   String toString() {
-    return 'MainRefUpdateDispatcherEvent.headRefUpdate(entryRef: $entryRef)';
+    return 'MainRefUpdateDispatcherEvent.update()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MainRefUpdateDispatcherEventHeadRefUpdate &&
-            (identical(other.entryRef, entryRef) ||
-                other.entryRef == entryRef));
+            other is _$MainRefUpdateDispatcherEventUpdate);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, entryRef);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$MainRefUpdateDispatcherEventHeadRefUpdateCopyWith<
-          _$MainRefUpdateDispatcherEventHeadRefUpdate>
-      get copyWith => __$$MainRefUpdateDispatcherEventHeadRefUpdateCopyWithImpl<
-          _$MainRefUpdateDispatcherEventHeadRefUpdate>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(EntryRef entryRef) headRefUpdate,
+    required TResult Function() update,
   }) {
-    return headRefUpdate(entryRef);
+    return update();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(EntryRef entryRef)? headRefUpdate,
+    TResult? Function()? update,
   }) {
-    return headRefUpdate?.call(entryRef);
+    return update?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(EntryRef entryRef)? headRefUpdate,
+    TResult Function()? update,
     required TResult orElse(),
   }) {
-    if (headRefUpdate != null) {
-      return headRefUpdate(entryRef);
+    if (update != null) {
+      return update();
     }
     return orElse();
   }
@@ -208,48 +142,36 @@ class _$MainRefUpdateDispatcherEventHeadRefUpdate
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MainRefUpdateDispatcherEventHeadRefUpdate value)
-        headRefUpdate,
+    required TResult Function(MainRefUpdateDispatcherEventUpdate value) update,
   }) {
-    return headRefUpdate(this);
+    return update(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MainRefUpdateDispatcherEventHeadRefUpdate value)?
-        headRefUpdate,
+    TResult? Function(MainRefUpdateDispatcherEventUpdate value)? update,
   }) {
-    return headRefUpdate?.call(this);
+    return update?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MainRefUpdateDispatcherEventHeadRefUpdate value)?
-        headRefUpdate,
+    TResult Function(MainRefUpdateDispatcherEventUpdate value)? update,
     required TResult orElse(),
   }) {
-    if (headRefUpdate != null) {
-      return headRefUpdate(this);
+    if (update != null) {
+      return update(this);
     }
     return orElse();
   }
 }
 
-abstract class MainRefUpdateDispatcherEventHeadRefUpdate
+abstract class MainRefUpdateDispatcherEventUpdate
     implements MainRefUpdateDispatcherEvent {
-  factory MainRefUpdateDispatcherEventHeadRefUpdate(
-          {required final EntryRef entryRef}) =
-      _$MainRefUpdateDispatcherEventHeadRefUpdate;
-
-  @override
-  EntryRef get entryRef;
-  @override
-  @JsonKey(ignore: true)
-  _$$MainRefUpdateDispatcherEventHeadRefUpdateCopyWith<
-          _$MainRefUpdateDispatcherEventHeadRefUpdate>
-      get copyWith => throw _privateConstructorUsedError;
+  factory MainRefUpdateDispatcherEventUpdate() =
+      _$MainRefUpdateDispatcherEventUpdate;
 }
 
 /// @nodoc
