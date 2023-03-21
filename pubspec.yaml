@@ -31,7 +31,6 @@ dev_dependencies:
   given_when_then_unit_test:
   core_event_source_test_util:
     path: ../core_event_source_test_util
-  checks: ^0.2.1
 #  core_event_source_test:
   melos: ^3.0.0
 
