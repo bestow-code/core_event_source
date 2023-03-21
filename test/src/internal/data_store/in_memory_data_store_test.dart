@@ -8,7 +8,7 @@ void main() {
   group('InMemoryDataStore', () {
     final dataStoreInternal = InMemoryDataStoreInternal<Event>.from();
     final dataStore = InMemoryDataStore<Event>(
-        headRefId: '1', dataStoreInternal: dataStoreInternal);
+        headRefName: '1', dataStoreInternal: dataStoreInternal);
     final specification = DataStoreSpecification(dataStore);
     specification.evaluate();
   });

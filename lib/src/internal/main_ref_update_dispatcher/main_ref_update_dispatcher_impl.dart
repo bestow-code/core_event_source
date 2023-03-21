@@ -4,8 +4,6 @@ import 'package:core_event_source/entry.dart';
 import 'package:core_event_source/internal.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../common.dart';
-
 part 'main_ref_update_dispatcher_impl.freezed.dart';
 
 class MainRefUpdateDispatcherImpl<Command, Event, State>
