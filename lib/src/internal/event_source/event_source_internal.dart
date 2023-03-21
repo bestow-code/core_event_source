@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart' hide EventHandler;
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:core_event_source/internal.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../entry.dart';
@@ -46,14 +46,18 @@ class EventSourceInternal<Command, Event, State>
                 }),
             emit),
       ),
+      transformer: sequential(),
     );
     on<EventSourceEventEntryCollectionUpdate<Command, Event>>(
-        (event, emit) async => state.maybeMap(
-            orElse: () => addError(event),
-            initial: (initial) async => await _handleHeadEffect(
-                _entryCollection.buildInitial(initial.headEntryRef), emit),
-            ready: (ready) async => await _handleHeadEffect(
-                _entryCollection.buildMerge(ready.entryRef), emit)));
+      (event, emit) async => state.maybeMap(
+          orElse: () => addError(event),
+          initial: (initial) async => await _handleHeadEffect(
+              _entryCollection.buildInitialHeadEffect(initial.headEntryRef),
+              emit),
+          ready: (ready) async => await _handleHeadEffect(
+              _entryCollection.buildMergeHeadEffect(ready.entryRef), emit)),
+      transformer: sequential(),
+    );
 
     subscription = onUpdate.listen((_) {
       add(EventSourceEvent.entryCollectionUpdate());

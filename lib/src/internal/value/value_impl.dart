@@ -82,7 +82,16 @@ class ValueState<Event, T> with _$ValueState<Event, T> {
       });
       return copyWith(head: forward.entries.last.ref, values: nextValues);
     }, reset: (reset) {
-      throw UnimplementedError();
+      final nextValues = Map.of(values);
+      nextValues.removeWhere((key, value) => !reset.base.contains(key));
+      final start = values[reset.base.last] as T;
+
+      reset.entries.fold(start, (previousValue, element) {
+        final next = _applyEvents(previousValue, element.events, valueHandler);
+        nextValues[element.ref] = next;
+        return next;
+      });
+      return copyWith(head: reset.entries.last.ref, values: nextValues);
     }, none: (none) {
       return this;
     });

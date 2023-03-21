@@ -1,14 +1,17 @@
 import 'package:core_event_source/event_source.dart';
+import 'package:core_event_source/internal.dart';
 
 import '../test_doubles/fake_behavior.dart';
-import '../util/fake_firebase_firestore.dart';
 
 Future<EventSource<FakeCommand, FakeView>> buildTestEventSourceInstance({
-  required FakeFirebaseFirestore firestore,
+  required InMemoryDataStoreInternal<FakeEvent> dataStoreInternal,
   required String headRefId,
 }) async {
-  return await EventStore.instanceFor(firestore: firestore)
-      .source(path: 'test/1', reader: FakeEventJsonConverter())
-      .head(headRefId)
-      .get<FakeCommand, FakeState, FakeView>(behavior: FakeBehavior());
+  return await EventSourceImpl.from<FakeCommand, FakeEvent, FakeState,
+          FakeView>(
+      dataStore: InMemoryDataStore(
+        headRefId: headRefId,
+        dataStoreInternal: dataStoreInternal,
+      ),
+      behavior: FakeBehavior());
 }

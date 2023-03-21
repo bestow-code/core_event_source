@@ -4,24 +4,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../entry.dart';
 
-part 'head_effect_dispatcher.freezed.dart';
-
-@freezed
-class HeadEffect<Event> with _$HeadEffect<Event> {
-  factory HeadEffect.append(EntryRef start, Entry<Event> entry) =
-      HeadEffectAppend<Event>;
-
-  @Assert('entries.isNotEmpty')
-  factory HeadEffect.forward(EntryRef start, Iterable<Entry<Event>> entries) =
-      HeadEffectForward<Event>;
-
-  @Assert('entries.isNotEmpty')
-  factory HeadEffect.reset(EntryRef start, Iterable<EntryRef> base,
-      Iterable<Entry<Event>> entries) = HeadEffectReset<Event>;
-
-  factory HeadEffect.none() = HeadEffectNone;
-}
-
 mixin HeadEffectHandler<Event> {
   void apply(HeadEffect<Event> effect);
 }
@@ -63,7 +45,7 @@ class HeadEffectDispatcherImpl<Event> extends BlocBase<HeadEffect<Event>>
     for (final handler in _handlers) {
       handler.apply(effect);
     }
-    await _journal.apply(effect);
+    await _journal.applyHeadEffect(effect);
     emit(effect);
   }
 }

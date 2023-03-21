@@ -1,20 +1,21 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core_event_source/event_source.dart';
+import 'package:core_event_source/internal.dart';
+
 import '../test_doubles/fake_behavior.dart';
 import '../util/debug_bloc_observer.dart';
-import '../util/fake_firebase_firestore.dart';
 import '_test_util.dart';
 
 main() {
   late EventSource<FakeCommand, FakeView> source1;
-  late FakeFirebaseFirestore firestore;
+  late InMemoryDataStoreInternal<FakeEvent> dataStoreInternal;
   DebugBlocObserver.observe();
   blocTest(
     'execute command',
     setUp: () async {
-      firestore = FakeFirebaseFirestore.newInstance;
+      dataStoreInternal = InMemoryDataStoreInternal.from();
       source1 = await buildTestEventSourceInstance(
-          headRefId: '1', firestore: firestore);
+          headRefId: '1', dataStoreInternal: dataStoreInternal);
     },
     build: () => source1,
     act: (_) {
@@ -25,9 +26,9 @@ main() {
   blocTest(
     'execute two command, same execution',
     setUp: () async {
-      firestore = FakeFirebaseFirestore.newInstance;
+      dataStoreInternal = InMemoryDataStoreInternal.from();
       source1 = await buildTestEventSourceInstance(
-          headRefId: '1', firestore: firestore);
+          headRefId: '1', dataStoreInternal: dataStoreInternal);
     },
     build: () => source1,
     act: (_) {
@@ -38,9 +39,9 @@ main() {
   blocTest(
     'execute two command, same instance',
     setUp: () async {
-      firestore = FakeFirebaseFirestore.newInstance;
+      dataStoreInternal = InMemoryDataStoreInternal.from();
       source1 = await buildTestEventSourceInstance(
-          headRefId: '1', firestore: firestore);
+          headRefId: '1', dataStoreInternal: dataStoreInternal);
     },
     build: () => source1,
     act: (_) {
@@ -52,14 +53,13 @@ main() {
   blocTest(
     'execute commands on separate source instances, in sequence',
     setUp: () async {
-      firestore = FakeFirebaseFirestore.newInstance;
-
+      dataStoreInternal = InMemoryDataStoreInternal.from();
       source1 = await buildTestEventSourceInstance(
-          headRefId: '1', firestore: firestore);
+          headRefId: '1', dataStoreInternal: dataStoreInternal);
 
       final done = source1.stream.first.then((value) async {
         source1 = await buildTestEventSourceInstance(
-            headRefId: '1', firestore: firestore);
+            headRefId: '1', dataStoreInternal: dataStoreInternal);
         await source1.stream.first;
       });
       source1.execute([{}]);

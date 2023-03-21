@@ -1,6 +1,5 @@
 import 'package:core_event_source/event_source.dart';
-
-import '../../event_sourced_behavior.dart';
+import 'package:core_event_source/event_sourced_behavior.dart';
 
 abstract class HeadReference<Event> {
   SourceReference<Event> get sourceReference;

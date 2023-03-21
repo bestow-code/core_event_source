@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
-import 'package:flutter/widgets.dart';
+import 'package:test/scaffolding.dart';
 
 class DebugBlocObserver extends BlocObserver {
   static void observe() {
@@ -11,13 +13,14 @@ class DebugBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    debugPrint('\nBloc.onChange(${bloc.runtimeType}, $change)');
+    printOnFailure('Bloc.onChange(${bloc.runtimeType}, $change)');
   }
 
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
-    debugPrint('\nBloc.onError - ${bloc.runtimeType}');
-    debugPrintStack(label: error.toString(), stackTrace: stackTrace);
+    print('\nBloc.onError - ${bloc.runtimeType}');
+    print(error.toString());
+    print(stackTrace.toString());
   }
 }
