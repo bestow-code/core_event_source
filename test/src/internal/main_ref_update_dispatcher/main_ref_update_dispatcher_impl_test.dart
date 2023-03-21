@@ -23,7 +23,7 @@ class MockEventSourceInternal extends Mock
 
 main() {
   // # Subject
-  late MainRefUpdateDispatcherImpl mainRefUpdateDispatcherImpl;
+  // late MainRefUpdateDispatcherImpl mainRefUpdateDispatcherImpl;
   late MainRefEffect<Event> initialState;
 
   // # Mock Dependencies
@@ -38,11 +38,9 @@ main() {
     initialState = MainRefEffect.none();
   });
 
-  MainRefUpdateDispatcherImpl<Command, Event, State> build() {
-    return mainRefUpdateDispatcherImpl =
-        MainRefUpdateDispatcherImpl<Command, Event, State>(
-            initialState, _journal, _source, _entryCollection);
-  }
+  MainRefUpdateDispatcherImpl<Command, Event, State> build() =>
+      MainRefUpdateDispatcherImpl<Command, Event, State>(
+          initialState, _journal, _source, _entryCollection);
 
   group('MainRefUpdateDispatcherImpl', () {
     group('given a path forward available', () {

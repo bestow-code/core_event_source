@@ -10,7 +10,7 @@ Future<EventSource<FakeCommand, FakeView>> buildTestEventSourceInstance({
   return await EventSourceImpl.from<FakeCommand, FakeEvent, FakeState,
           FakeView>(
       dataStore: InMemoryDataStore(
-        headRefId: headRefId,
+        headRefName: headRefId,
         dataStoreInternal: dataStoreInternal,
       ),
       behavior: FakeBehavior());

@@ -1,5 +1,3 @@
-import 'package:bloc/bloc.dart';
-import 'package:core_event_source/internal.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../entry.dart';

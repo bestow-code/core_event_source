@@ -2,7 +2,7 @@ An event sourcing library for Flutter, powered by Bloc.
 
 Supports durable, real-time syncing across devices.
 
-Currently works with Firebase Firestore via [flutter_core_event_source](../flutter_core_event_source).
+Currently works with Firebase Firestore via [flutter_core_event_source](https://github.com/ryanhanks-bestow/flutter_core_event_source).
 
 ## Getting Started
 ```dart

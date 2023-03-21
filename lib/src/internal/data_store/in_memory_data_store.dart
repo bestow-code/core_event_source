@@ -7,31 +7,31 @@ import 'package:core_event_source/src/entry/entry_ref.dart';
 import 'package:rxdart/rxdart.dart';
 
 class InMemoryDataStore<Event> implements CoreDataStore<Event> {
-  final String _headRefId;
+  final String _headRefName;
   final InMemoryDataStoreInternal<Event> _internal;
 
   InMemoryDataStore({
-    required String headRefId,
+    required String headRefName,
     required InMemoryDataStoreInternal<Event> dataStoreInternal,
   })  : _internal = dataStoreInternal,
-        _headRefId = headRefId;
+        _headRefName = headRefName;
 
   @override
   Future<void> initialize(Entry<Event> rootEntryIfEmpty) async {}
 
   @override
   Future<void> appendHeadEntry(Entry<Event> entry) async {
-    _internal.appendHeadEntry(entry, headRefId: _headRefId);
+    _internal.appendHeadEntry(entry, headRefId: _headRefName);
   }
 
   @override
   Future<void> forwardHeadEntryRef(EntryRef previous, EntryRef next) async {
-    _internal.forwardHeadEntryRef(previous, next, headRefId: _headRefId);
+    _internal.forwardHeadEntryRef(previous, next, headRefId: _headRefName);
   }
 
   @override
   Future<void> resetHeadEntryRef(EntryRef previous, EntryRef next) async {
-    _internal.resetHeadEntryRef(previous, next, headRefId: _headRefId);
+    _internal.resetHeadEntryRef(previous, next, headRefId: _headRefName);
   }
 
   @override
@@ -45,7 +45,7 @@ class InMemoryDataStore<Event> implements CoreDataStore<Event> {
 
   @override
   Future<EntryRef?> get headEntryRef async =>
-      _internal.headEntryRefs[_headRefId];
+      _internal.headEntryRefs[_headRefName];
 
   @override
   Future<EntryRef> get mainEntryRef async => _internal.mainEntryRef;
