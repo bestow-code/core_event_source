@@ -24,9 +24,10 @@ on:
 jobs:
   verify_and_test:
     name: Verify and Test
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
-    with:
-      working_directory: packages/flutter_core_event_source
-      min_coverage: 90
-      flutter_channel: stable
-      flutter_version: 3.7.7
+    steps:
+      - uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+        with:
+          working_directory: packages/flutter_core_event_source
+          min_coverage: 90
+          flutter_channel: stable
+          flutter_version: 3.7.7
