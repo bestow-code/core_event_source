@@ -31,4 +31,4 @@ jobs:
       min_coverage: 90
       flutter_channel: stable
       flutter_version: 3.7.7
-      runs_on: '["self-hosted","macos"]'
+      runs_on: self-hosted
