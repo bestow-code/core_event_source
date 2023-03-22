@@ -7,6 +7,8 @@ import '../util/fake_firebase_firestore.dart';
 import '_test_util.dart';
 
 main() {
+  late final EventStore eventStore;
+
   late EventSource<FakeCommand, FakeView> source1;
   late EventSource<FakeCommand, FakeView> source2;
 
@@ -20,9 +22,9 @@ main() {
         firestore = FakeFirebaseFirestore.newInstance;
 
         source1 = await buildTestEventSourceInstance(
-            headRefId: '1', firestore: firestore);
+            headRefId: '1', eventStore: eventStore);
         source2 = await buildTestEventSourceInstance(
-            headRefId: '2', firestore: firestore);
+            headRefId: '2', eventStore: eventStore);
       },
       build: () => source2,
       act: (_) {

@@ -64,6 +64,10 @@ class EventSourceInternal<Command, Event, State>
     });
   }
 
+  Future<bool> get isReady => stream
+      .firstWhere((element) => element.mapOrNull(ready: (_) => true) ?? false)
+      .then((_) => true);
+
   @override
   @protected
   @mustCallSuper
@@ -84,4 +88,12 @@ class EventSourceInternal<Command, Event, State>
 
   void execute(Iterable<Command> commands) =>
       add(EventSourceEvent.commandsApply(commands));
+  @override
+  Future<void> close() async {
+    await subscription.cancel();
+    await super.close();
+    await _entryCollection.close();
+    await _dispatcher.close();
+    await _stateValue.close();
+  }
 }

@@ -30,7 +30,10 @@ dependencies:
   json_annotation: ^4.8.0
   rxdart:
   logging:
+  meta:
+
 dev_dependencies:
+  diff_match_patch:
   flutter_test:
     sdk: flutter
   test:

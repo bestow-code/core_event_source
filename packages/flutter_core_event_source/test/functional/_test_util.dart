@@ -5,11 +5,13 @@ import 'package:flutter_core_event_source/flutter_core_event_source.dart';
 import '../test_doubles/fake_behavior.dart';
 
 Future<EventSource<FakeCommand, FakeView>> buildTestEventSourceInstance({
-  required FirebaseFirestore firestore,
+  required EventStore eventStore,
   required String headRefId,
 }) async {
-  return await FirestoreEventStore.instanceFor(firestore: firestore)
+  return await eventStore
       .source(path: 'test/1', reader: FakeEventJsonConverter())
       .head(headRefId)
-      .get<FakeCommand, FakeState, FakeView>(behavior: FakeBehavior());
+      .get<FakeCommand, FakeState, FakeView>(
+        behavior: FakeBehavior(),
+      );
 }

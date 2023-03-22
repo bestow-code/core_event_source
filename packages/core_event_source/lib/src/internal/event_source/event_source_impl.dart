@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart' hide EventHandler;
 import 'package:core_event_source/event_source.dart';
 import 'package:core_event_source/internal.dart';
@@ -14,6 +16,7 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
     implements EventSource<Command, View> {
   final EventSourceInternal<Command, Event, State> _internal;
   final Value<Event, View> _viewValue;
+  late final StreamSubscription _subscription;
 
   EventSourceImpl({
     required Value<Event, View> viewValue,
@@ -21,7 +24,7 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
   })  : _viewValue = viewValue,
         _internal = internal,
         super(viewValue.current) {
-    _viewValue.source.stream.listen((emit));
+    _subscription = _viewValue.source.stream.listen((emit));
   }
 
   @override
@@ -92,5 +95,16 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
     entryCollection.start();
 
     return source;
+  }
+
+  @override
+  Future<bool> get isReady => _internal.isReady;
+
+  @override
+  Future<void> close() async {
+    await _subscription.cancel();
+    await super.close();
+    await _internal.close();
+    await _viewValue.close();
   }
 }

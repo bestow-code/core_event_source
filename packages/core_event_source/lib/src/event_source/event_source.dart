@@ -4,4 +4,5 @@ import 'package:bloc/bloc.dart';
 
 abstract class EventSource<Command, View> implements BlocBase<View> {
   void execute(Iterable<Command> commands);
+  Future<bool> get isReady;
 }

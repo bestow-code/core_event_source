@@ -3,7 +3,6 @@ import 'package:async/async.dart';
 import 'package:core_event_source/entry.dart';
 import 'package:core_event_source/internal.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
-import 'package:matcher/matcher.dart';
 import 'package:test/expect.dart';
 
 class DataStoreSpecification<DataStore extends CoreDataStore<Event>, Event> {
@@ -23,7 +22,7 @@ class DataStoreSpecification<DataStore extends CoreDataStore<Event>, Event> {
       before(() {
         dataStoreInternal = InMemoryDataStoreInternal.from();
         dataStore = InMemoryDataStore(
-            headRefId: '1', dataStoreInternal: dataStoreInternal);
+            headRefName: '1', dataStoreInternal: dataStoreInternal);
       });
       // then('check it fails if initialized', () async {
       //   expect(() => dataStore.initialize(entry1), throwsUnsupportedError);
@@ -106,7 +105,7 @@ class DataStoreSpecification<DataStore extends CoreDataStore<Event>, Event> {
           mainEntryRef: entry1.ref,
         );
         dataStore = InMemoryDataStore(
-            headRefId: '1', dataStoreInternal: dataStoreInternal);
+            headRefName: '1', dataStoreInternal: dataStoreInternal);
       });
       then('check state', () async {
         expect(await dataStore.headEntryRef, equals(null));
