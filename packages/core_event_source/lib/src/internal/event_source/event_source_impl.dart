@@ -23,8 +23,10 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
     required EventSourceInternal<Command, Event, State> internal,
   })  : _viewValue = viewValue,
         _internal = internal,
-        super(viewValue.current) {
+        super(viewValue.current) {}
+  void start() {
     _subscription = _viewValue.source.stream.listen((emit));
+    _internal.start();
   }
 
   @override
@@ -92,14 +94,11 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
     MainRefUpdateDispatcherImpl<Command, Event, State>(
         MainRefEffect.none(), journal, internal, entryCollection);
 
-    entryCollection.start();
-
     return source;
   }
 
   @override
   Future<bool> get isReady => _internal.isReady;
-
   @override
   Future<void> close() async {
     await _subscription.cancel();

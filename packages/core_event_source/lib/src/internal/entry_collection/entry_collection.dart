@@ -14,5 +14,6 @@ abstract class EntryCollection<Event>
 
   MainRefEffect<Event> buildMainRefEffect(EntryRef headRef);
 
+  void start();
   Future<void> close();
 }

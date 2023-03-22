@@ -5,5 +5,6 @@ library event_source;
 export 'src/event_source/event_source.dart';
 export 'src/event_source/event_store.dart';
 export 'src/event_source/head_reference.dart';
+export 'src/event_source/in_memory_event_store.dart';
 export 'src/event_source/json_event_converter.dart';
 export 'src/event_source/source_reference.dart';

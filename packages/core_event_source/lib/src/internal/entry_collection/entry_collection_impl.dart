@@ -43,6 +43,7 @@ class EntryCollectionImpl<Event> extends BlocBase<EntryCollectionState<Event>>
         _entrySnapshotsStream = entrySnapshotsStream,
         _onError = onError,
         _mainEntryRefStream = mainEntryRefStream;
+  @override
   void start() {
     _subscriptions = [
       _mainEntryRefStream.listen(_mainEntryRefUpdate),

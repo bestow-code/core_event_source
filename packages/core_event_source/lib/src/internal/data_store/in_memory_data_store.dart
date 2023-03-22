@@ -141,7 +141,7 @@ class InMemoryDataStoreInternal<Event> {
   }
 
   Stream<Iterable<EntrySnapshot<Event>>> get entrySnapshotsStream =>
-      _entryCollectionSnapshots;
+      _entryCollectionSnapshots.asBroadcastStream();
 
   Map<String, EntryRef> get headEntryRefs => _headEntryRefs;
 

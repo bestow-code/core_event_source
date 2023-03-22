@@ -1,12 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core_event_source/entry.dart';
 import 'package:core_event_source/internal.dart';
+import 'package:core_event_source_test_util/core_event_source_test_util.dart';
 
 // import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-import '../../../test_doubles/fake_behavior.dart';
 import '../event_source_impl/test_common.dart';
 
 class MockJournal extends Mock implements Journal<Event> {}

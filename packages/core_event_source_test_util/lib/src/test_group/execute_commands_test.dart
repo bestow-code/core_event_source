@@ -1,3 +1,4 @@
+@Timeout(const Duration(milliseconds: 1000))
 import 'dart:math';
 
 import 'package:bloc_test/bloc_test.dart';
@@ -28,6 +29,7 @@ class ExecuteCommandsTestGroup extends IntegrationTestGroup {
         'execute command',
         build: () => source1,
         act: (_) async {
+          source1.start();
           await source1.isReady;
           source1.execute([{}]);
         },
@@ -38,6 +40,7 @@ class ExecuteCommandsTestGroup extends IntegrationTestGroup {
         'execute two command, same execution',
         build: () => source1,
         act: (_) async {
+          source1.start();
           await source1.isReady;
           source1.execute([{}, {}]);
         },
@@ -48,6 +51,7 @@ class ExecuteCommandsTestGroup extends IntegrationTestGroup {
         'execute two command, same instance',
         build: () => source1,
         act: (_) async {
+          source1.start();
           await source1.isReady;
           source1.execute([{}]);
           source1.execute([{}]);
@@ -58,6 +62,7 @@ class ExecuteCommandsTestGroup extends IntegrationTestGroup {
       blocTest2(
         'execute commands on separate source instances, in sequence',
         setUp: () async {
+          source1.start();
           await source1.isReady;
           final done = source1.stream.take(1).first;
           source1.execute([{}]);
@@ -67,6 +72,7 @@ class ExecuteCommandsTestGroup extends IntegrationTestGroup {
         },
         build: () => source1,
         act: (_) async {
+          source1.start();
           await source1.isReady;
           source1.execute([{}]);
           source1.execute([{}]);

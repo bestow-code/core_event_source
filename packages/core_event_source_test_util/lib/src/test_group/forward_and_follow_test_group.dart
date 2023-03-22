@@ -28,6 +28,8 @@ class ForwardAndFollowTestGroup extends IntegrationTestGroup {
       blocTest2(
         'execute commands on separate headRef instances, in sequence',
         setUp: () async {
+          source1.start();
+
           await source1.isReady;
           final done = source1.stream.take(1).first;
           source1.execute([{}]);
@@ -37,6 +39,7 @@ class ForwardAndFollowTestGroup extends IntegrationTestGroup {
         },
         build: () => source2,
         act: (_) async {
+          source2.start();
           await source2.isReady;
           source2.execute([{}]);
         },

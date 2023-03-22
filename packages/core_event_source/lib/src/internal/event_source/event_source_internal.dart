@@ -58,10 +58,13 @@ class EventSourceInternal<Command, Event, State>
               _entryCollection.buildMergeHeadEffect(ready.entryRef), emit)),
       transformer: sequential(),
     );
+  }
 
-    subscription = onUpdate.listen((_) {
+  void start() {
+    subscription = _entryCollection.stream.listen((_) {
       add(EventSourceEvent.entryCollectionUpdate());
     });
+    _entryCollection.start();
   }
 
   Future<bool> get isReady => stream
