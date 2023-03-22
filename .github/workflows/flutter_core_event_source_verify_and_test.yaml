@@ -20,14 +20,13 @@ on:
       - '.github/workflows/**'
       - 'packages/flutter_core_event_source/**'
 
+
 jobs:
   verify_and_test:
     name: Verify and Test
-    runs-on: self-hosted
-    steps:
-      - uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
-        with:
-          working_directory: packages/flutter_core_event_source
-          min_coverage: 90
-          flutter_channel: stable
-          flutter_version: 3.7.7
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+    with:
+      working_directory: packages/flutter_core_event_source
+      min_coverage: 90
+      flutter_channel: stable
+      flutter_version: 3.7.7
