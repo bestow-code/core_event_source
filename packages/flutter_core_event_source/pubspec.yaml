@@ -11,9 +11,11 @@ dependencies:
   flutter:
     sdk: flutter
   core_event_source:
-    git:
-      url: https://github.com/ryanhanks-bestow/core_event_source
-      ref: main
+    path: ../core_event_source
+
+#    git:
+#      url: https://github.com/ryanhanks-bestow/core_event_source
+#      ref: main
 
   async:
   bloc:
@@ -46,9 +48,11 @@ dev_dependencies:
 #  core_event_source_test:
   melos: ^3.0.0
   core_event_source_test_util:
-    git:
-      url: https://github.com/ryanhanks-bestow/core_event_source_test_util
-      ref: main
+    path: ../core_event_source
+    
+#    git:
+#      url: https://github.com/ryanhanks-bestow/core_event_source_test_util
+#      ref: main
 
 index_generator:
   exclude:

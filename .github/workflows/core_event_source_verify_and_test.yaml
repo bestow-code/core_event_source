@@ -25,7 +25,7 @@ on:
 jobs:
   verify_and_test:
     name: Verify and Test
-    uses: ./.github/workflows/flutter_package.yml
+    uses: ./.github/workflows/dart_package.yml
     with:
       working_directory: packages/core_event_source
       dart_sdk: stable
