@@ -52,6 +52,8 @@ dev_dependencies:
   melos: ^3.0.0
   core_event_source_test_util:
     path: ../core_event_source_test_util
+  flutter_core_event_source_test_util:
+    path: ../flutter_core_event_source_test_util
 
 #    git:
 #      url: https://github.com/ryanhanks-bestow/core_event_source_test_util
@@ -69,12 +71,3 @@ index_generator:
       name: internal
       include:
         - src/internal
-
-    - path: test
-      name: test_util
-      include:
-        - util
-    - path: test
-      name: test_doubles
-      include:
-        - test_doubles

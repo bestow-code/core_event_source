@@ -1,4 +1,10 @@
-part of 'execute_commands_test.dart';
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:diff_match_patch/diff_match_patch.dart';
+import 'package:meta/meta.dart';
+// import '../util/debug_bloc_observer.dart';
+import 'package:test/test.dart' as test;
 
 @isTest
 void blocTest2<B extends BlocBase<State>, State>(

@@ -1,7 +1,7 @@
 import 'package:flutter_core_event_source/flutter_core_event_source.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../util/fake_firebase_firestore.dart';
+import '../../../../flutter_core_event_source_test_util/lib/src/fake_firebase_firestore.dart';
 
 main() {
   test('instanceFor returns EventStore by firebase appId', () {
