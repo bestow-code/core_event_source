@@ -21,7 +21,6 @@ on:
       - '.github/workflows/**'
       - 'packages/flutter_core_event_source/**'
 
-
 jobs:
   verify_and_test:
     name: Verify and Test
