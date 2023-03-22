@@ -25,7 +25,7 @@ on:
 jobs:
   verify_and_test:
     name: Verify and Test
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@main
+    uses: ./.github/workflows/dart_package.yml@main
     with:
       working_directory: packages/core_event_source_test_util
       dart_sdk: stable
