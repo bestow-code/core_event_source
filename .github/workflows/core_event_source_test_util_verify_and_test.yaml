@@ -1,0 +1,32 @@
+name: Core Event Source Test Util
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+    paths:
+      - '.github/workflows/core_event_source_test_util_verify_and_test.yaml'
+      - 'packages/core_event_source_test_util/**'
+
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - '.github/workflows/**'
+      - 'packages/core_event_source_test_util/**'
+
+
+jobs:
+  verify_and_test:
+    name: Verify and Test
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    with:
+      working_directory: packages/core_event_source_test_util
+      dart_sdk: stable
+      min_coverage: 90
