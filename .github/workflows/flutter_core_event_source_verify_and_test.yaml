@@ -23,8 +23,8 @@ on:
 
 jobs:
   verify_and_test:
-    runs-on: self-hosted
     name: Verify and Test
+    runs-on: self-hosted
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
       working_directory: packages/flutter_core_event_source
