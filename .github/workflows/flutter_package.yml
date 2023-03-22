@@ -29,7 +29,7 @@ on:
         default: 100
       runs_on:
         required: false
-        type: se
+        type: string
         default: "ubuntu-latest"
       setup:
         required: false
