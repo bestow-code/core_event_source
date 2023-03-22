@@ -24,7 +24,6 @@ abstract class FirestoreEventStore implements EventStore {
 
     FirestoreEventStore newInstance =
         FirestoreEventStoreImpl(firestore: firestore);
-    // FlutterEventStore newInstance = EventStoreImpl(firestore: firestore);
     _cachedInstances[firestore.app.name] = newInstance;
 
     return newInstance;
