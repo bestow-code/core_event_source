@@ -19,67 +19,70 @@ import '../test_doubles/fake_behavior.dart';
 part 'bloc_test.dart';
 
 main() async {
-  ExecuteCommandsIntegrationTestSuite(FirestoreEventStoreFactory(
+  ExecuteCommandsTestGroup(FirestoreEventStoreFactory(
       () async => await Firebase.initializeApp())).run();
 }
 
 typedef EventStoreBuilder = Future<EventStore> Function();
 
-class ExecuteCommandsIntegrationTestSuite extends IntegrationTestSuite {
-  ExecuteCommandsIntegrationTestSuite(super.eventStoreFactory);
+class ExecuteCommandsTestGroup extends IntegrationTestGroup {
+  ExecuteCommandsTestGroup(super.eventStoreFactory);
+
+  static const headRefName1 = '1';
+  static const headRefName2 = '2';
 
   @override
   run() {
+    late EventStore eventStore;
+    late String sourcePath;
     late EventSource<FakeCommand, FakeView> source1;
-    // DebugBlocObserver.observe();
-    // setUp(() async {
-    //   source1 = await buildEventSource1();
-    // });
+
     group('Execute Commands', () {
+      setUp(() async => eventStore = await eventStoreFactory.create());
+      setUp(() => sourcePath = 'objects/${Random.secure().nextDouble()}');
+      setUp(() async =>
+          source1 = await build(eventStore, sourcePath, headRefName1));
+
       blocTest2(
         'execute command',
-        setUp: () async => source1 = await buildEventSource1(),
         build: () => source1,
         act: (_) async {
           await source1.isReady;
           source1.execute([{}]);
         },
-        wait: const Duration(milliseconds: 100),
+        wait: const Duration(milliseconds: 10),
         expect: () => [1, 2],
       );
       blocTest2(
         'execute two command, same execution',
-        setUp: () async => source1 = await buildEventSource1(),
         build: () => source1,
         act: (_) async {
           await source1.isReady;
           source1.execute([{}, {}]);
         },
-        wait: const Duration(milliseconds: 100),
+        wait: const Duration(milliseconds: 10),
         expect: () => [1, 4],
       );
       blocTest2(
         'execute two command, same instance',
-        setUp: () async => source1 = await buildEventSource1(),
         build: () => source1,
         act: (_) async {
           await source1.isReady;
           source1.execute([{}]);
           source1.execute([{}]);
         },
-        wait: const Duration(milliseconds: 100),
+        wait: const Duration(milliseconds: 10),
         expect: () => [1, 2, 4],
       );
       blocTest2(
         'execute commands on separate source instances, in sequence',
         setUp: () async {
-          source1 = await buildEventSource1();
           await source1.isReady;
-          final done = source1.stream.first;
+          final done = source1.stream.take(1).first;
           source1.execute([{}]);
           await done;
           await source1.close();
-          source1 = await buildEventSource2();
+          source1 = await build(eventStore, sourcePath, headRefName1);
         },
         build: () => source1,
         act: (_) async {
@@ -87,7 +90,7 @@ class ExecuteCommandsIntegrationTestSuite extends IntegrationTestSuite {
           source1.execute([{}]);
           source1.execute([{}]);
         },
-        wait: const Duration(milliseconds: 100),
+        wait: const Duration(milliseconds: 10),
         expect: () => [1, 2, 4, 8],
         tearDown: () async => await source1.close(),
       );
@@ -95,34 +98,19 @@ class ExecuteCommandsIntegrationTestSuite extends IntegrationTestSuite {
   }
 }
 
-abstract class IntegrationTestSuite {
+abstract class IntegrationTestGroup {
   final TestEventStoreFactory eventStoreFactory;
 
-  IntegrationTestSuite(this.eventStoreFactory);
+  IntegrationTestGroup(this.eventStoreFactory);
 
-  static const headRefName1 = '1';
-  static const headRefName2 = '2';
-  late String sourcePath;
-
-  Future<EventSource<FakeCommand, FakeView>> buildEventSource1() async {
-    return (await eventStoreFactory.create())
-        .source(
-            path: (sourcePath = 'objects/${Random.secure().nextDouble()}'),
-            reader: FakeEventJsonConverter())
-        .head(headRefName1)
-        .get<FakeCommand, FakeState, FakeView>(
-          behavior: FakeBehavior(),
-        );
-  }
-
-  Future<EventSource<FakeCommand, FakeView>> buildEventSource2() async {
-    return (await eventStoreFactory.create())
-        .source(path: sourcePath, reader: FakeEventJsonConverter())
-        .head(headRefName1)
-        .get<FakeCommand, FakeState, FakeView>(
-          behavior: FakeBehavior(),
-        );
-  }
+  Future<EventSource<FakeCommand, FakeView>> build(
+          EventStore eventStore, String sourcePath, String headRefName) async =>
+      (eventStore)
+          .source(path: (sourcePath), reader: FakeEventJsonConverter())
+          .head(headRefName)
+          .get<FakeCommand, FakeState, FakeView>(
+            behavior: FakeBehavior(),
+          );
 
   void run();
 }
