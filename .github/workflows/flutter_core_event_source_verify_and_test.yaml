@@ -24,9 +24,21 @@ on:
 jobs:
   verify_and_test:
     runs-on: self-hosted
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
-    with:
-      working_directory: packages/flutter_core_event_source
-      min_coverage: 90
-      flutter_channel: stable
-      flutter_version: 3.7.7
+    env:
+      FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
+
+    steps:
+      - name: Cache firebase emulators
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.FIREBASE_EMULATORS_PATH }}
+          key:
+            ${{ runner.os }}-firebase-emulators-${{
+            hashFiles('emulator-cache/**') }}
+        continue-on-error: true
+      - uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+        with:
+          working_directory: packages/flutter_core_event_source
+          min_coverage: 90
+          flutter_channel: stable
+          flutter_version: 3.7.7
