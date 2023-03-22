@@ -54,7 +54,7 @@ jobs:
       run:
         working-directory: ${{inputs.working_directory}}
 
-    runs-on: [self-hosted,macos]
+    runs-on: [self-hosted, macos]
 
     steps:
       - name: 📚 Git Checkout
