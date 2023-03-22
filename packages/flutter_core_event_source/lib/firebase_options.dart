@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '848601493848',
     projectId: 'core-event-source-development',
     storageBucket: 'core-event-source-development.appspot.com',
-    iosClientId: '848601493848-t0rkth0elipgc4i8pp5m0eptql679jj2.apps.googleusercontent.com',
+    iosClientId:
+        '848601493848-t0rkth0elipgc4i8pp5m0eptql679jj2.apps.googleusercontent.com',
     iosBundleId: 'com.example.coreEventSource',
   );
 }
