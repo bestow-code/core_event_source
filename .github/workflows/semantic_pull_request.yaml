@@ -13,4 +13,4 @@ on:
 jobs:
   semantic_pull_request:
     name: Verify Semantic Pull Request
-    uses: ./.github/workflows/semantic_pull_request.yml@v1
+    uses: ./.github/workflows/semantic_pull_request.yml

@@ -12,6 +12,6 @@ on:
 
 jobs:
   spell_check:
-    uses: ./.github/workflows/spell_check.yml@v1
+    uses: ./.github/workflows/spell_check.yml
     with:
       config: .github/cspell.json
