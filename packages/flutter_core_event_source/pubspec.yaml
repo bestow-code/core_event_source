@@ -48,8 +48,8 @@ dev_dependencies:
 #  core_event_source_test:
   melos: ^3.0.0
   core_event_source_test_util:
-    path: ../core_event_source
-    
+    path: ../core_event_source_test_util
+
 #    git:
 #      url: https://github.com/ryanhanks-bestow/core_event_source_test_util
 #      ref: main
