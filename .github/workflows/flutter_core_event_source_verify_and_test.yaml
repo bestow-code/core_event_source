@@ -24,7 +24,7 @@ on:
 jobs:
   verify_and_test:
     name: Verify and Test
-    uses: bestowapp/very_good_workflows/.github/workflows/flutter_package.yml
+    uses: bestowapp/very_good_workflows/.github/workflows/flutter_package.yml@405e5d59d41573803e99cb88f9c233a8ab4997c7
     with:
       working_directory: packages/flutter_core_event_source
       min_coverage: 90
