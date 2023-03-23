@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:core_event_source/internal.dart';
-import 'package:core_event_source/src/entry/entry.dart';
-import 'package:core_event_source/src/entry/entry_ref.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../../entry.dart';
 
 class InMemoryDataStore<Event> implements CoreDataStore<Event> {
   final String _headRefName;
@@ -20,17 +20,18 @@ class InMemoryDataStore<Event> implements CoreDataStore<Event> {
   Future<void> initialize(Entry<Event> rootEntryIfEmpty) async {}
 
   @override
-  Future<void> appendHeadEntry(Entry<Event> entry) async {
-    _internal.appendHeadEntry(entry, headRefId: _headRefName);
+  Future<void> appendHeadEntry(
+      Entry<Event> entry, HeadEntryRef headEntryRef) async {
+    _internal.appendHeadEntry(entry, headEntryRef, headRefId: _headRefName);
   }
 
   @override
-  Future<void> forwardHeadEntryRef(EntryRef previous, EntryRef next) async {
+  Future<void> forwardHeadEntryRef(EntryRef previous, HeadEntryRef next) async {
     _internal.forwardHeadEntryRef(previous, next, headRefId: _headRefName);
   }
 
   @override
-  Future<void> resetHeadEntryRef(EntryRef previous, EntryRef next) async {
+  Future<void> resetHeadEntryRef(EntryRef previous, HeadEntryRef next) async {
     _internal.resetHeadEntryRef(previous, next, headRefId: _headRefName);
   }
 
@@ -44,14 +45,11 @@ class InMemoryDataStore<Event> implements CoreDataStore<Event> {
       _internal.entrySnapshotsStream;
 
   @override
-  Future<EntryRef?> get headEntryRef async =>
+  Future<HeadEntryRef?> get headEntryRef async =>
       _internal.headEntryRefs[_headRefName];
 
   @override
   Future<EntryRef> get mainEntryRef async => _internal.mainEntryRef;
-
-  @override
-  Future<EntryRef?> get mainEntryRefMaybe async => _internal.mainEntryRefMaybe;
 
   @override
   Stream<EntryRef> get mainEntryRefStream => _internal.mainEntryRefStream;
@@ -65,7 +63,7 @@ class InMemoryDataStore<Event> implements CoreDataStore<Event> {
   void setMainEntryRef(EntryRef ref) => _internal.setMainEntryRef(ref);
 
   @override
-  Future<void> appendMergeEntry(Entry<Event> entry) {
+  Future<void> appendMergeEntry(Entry<Event> entry, HeadEntryRef headEntryRef) {
     // TODO: implement appendMergeEntry
     throw UnimplementedError();
   }
@@ -76,12 +74,12 @@ class InMemoryDataStoreInternal<Event> {
 
   final ReplaySubject<Iterable<EntrySnapshot<Event>>> _entryCollectionSnapshots;
   final ReplaySubject<EntryRef> _mainRefSnapshots;
-  Map<String, EntryRef> _headEntryRefs;
+  Map<String, HeadEntryRef> _headEntryRefs;
   final Entry<Event> _rootEntry;
 
   factory InMemoryDataStoreInternal.from({
     Iterable<EntrySnapshot<Event>>? entryCollectionSnapshots,
-    Map<String, EntryRef>? headEntryRefs,
+    Map<String, HeadEntryRef>? headEntryRefs,
     EntryRef? mainEntryRef,
   }) {
     final Entry<Event> rootEntry = Entry.newRoot();
@@ -102,7 +100,7 @@ class InMemoryDataStoreInternal<Event> {
         entryCollectionSnapshots,
     required ReplaySubject<EntryRef> mainRefSnapshots,
     required Entry<Event> rootEntry,
-    required Map<String, EntryRef> headEntryRefs,
+    required Map<String, HeadEntryRef> headEntryRefs,
   })  : _entryCollectionSnapshots = entryCollectionSnapshots,
         _mainRefSnapshots = mainRefSnapshots,
         _headEntryRefs = headEntryRefs,
@@ -117,18 +115,19 @@ class InMemoryDataStoreInternal<Event> {
   }
 
   Future<void> appendHeadEntry(
-    Entry<Event> entry, {
+    Entry<Event> entry,
+    HeadEntryRef headEntryRef, {
     required String headRefId,
   }) async {
     final snapshot = EntrySnapshot(entry, isPending: true);
     _entryCollectionSnapshots.add([snapshot]);
     _entryCollectionSnapshots.add([snapshot.copyWith(isPending: false)]);
-    _headEntryRefs[headRefId] = entry.ref;
+    _headEntryRefs[headRefId] = headEntryRef;
   }
 
   Future<void> forwardHeadEntryRef(
     EntryRef previous,
-    EntryRef next, {
+    HeadEntryRef next, {
     required String headRefId,
   }) async {
     _headEntryRefs[headRefId] = next;
@@ -136,7 +135,7 @@ class InMemoryDataStoreInternal<Event> {
 
   Future<void> resetHeadEntryRef(
     EntryRef previous,
-    EntryRef next, {
+    HeadEntryRef next, {
     required String headRefId,
   }) async {
     _headEntryRefs[headRefId] = next;
@@ -149,7 +148,7 @@ class InMemoryDataStoreInternal<Event> {
   Stream<Iterable<EntrySnapshot<Event>>> get entrySnapshotsStream =>
       _entryCollectionSnapshots.asBroadcastStream();
 
-  Map<String, EntryRef> get headEntryRefs => _headEntryRefs;
+  Map<String, HeadEntryRef> get headEntryRefs => _headEntryRefs;
 
   Future<EntryRef> get mainEntryRef async => _mainRefSnapshots.values.last;
 

@@ -1,5 +1,5 @@
 import 'dart:math' hide log;
-import 'dart:developer';
+
 import 'package:core_event_source/event_source.dart';
 import 'package:test/test.dart';
 

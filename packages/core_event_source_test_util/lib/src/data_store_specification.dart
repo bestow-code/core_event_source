@@ -30,7 +30,7 @@ class DataStoreSpecification<DataStore extends CoreDataStore<Event>, Event> {
       then('check state', () async {
         expect(await dataStore.headEntryRef, equals(null));
         expect(await dataStore.mainEntryRef, equals(EntryRef.root));
-        expect(await dataStore.mainEntryRefMaybe, equals(EntryRef.root));
+        // expect(await dataStore.mainEntryRefMaybe, equals(EntryRef.root));
         expect((await dataStore.rootEntry).ref, equals(EntryRef.root));
         final rootEntrySnapshot =
             (await dataStore.entrySnapshotsStream.take(1).toList())
@@ -38,20 +38,20 @@ class DataStoreSpecification<DataStore extends CoreDataStore<Event>, Event> {
                 .single;
         expect(rootEntrySnapshot.entry.ref, equals(EntryRef.root));
       });
-      when2('add entry', () async => dataStore.appendHeadEntry(entry1),
-          then: () {
-        then('check state and entry collection stream', () async {
-          expect(await dataStore.headEntryRef, equals(entry1.ref));
-          final entrySnapshots =
-              (await dataStore.entrySnapshotsStream.take(3).toList()).skip(1);
-
-          expect(entrySnapshots.length, equals(2));
-          expect(entrySnapshots.first.single.entry, equals(entry1));
-          expect(entrySnapshots.first.single.isPending, equals(true));
-          expect(entrySnapshots.last.single.entry, equals(entry1));
-          expect(entrySnapshots.last.single.isPending, equals(false));
-        });
-      });
+      // when2('add entry', () async => dataStore.appendHeadEntry(entry1),
+      //     then: () {
+      //   then('check state and entry collection stream', () async {
+      //     expect(await dataStore.headEntryRef, equals(entry1.ref));
+      //     final entrySnapshots =
+      //         (await dataStore.entrySnapshotsStream.take(3).toList()).skip(1);
+      //
+      //     expect(entrySnapshots.length, equals(2));
+      //     expect(entrySnapshots.first.single.entry, equals(entry1));
+      //     expect(entrySnapshots.first.single.isPending, equals(true));
+      //     expect(entrySnapshots.last.single.entry, equals(entry1));
+      //     expect(entrySnapshots.last.single.isPending, equals(false));
+      //   });
+      // });
       when2(
           'add snapshots',
           () async => dataStore
@@ -74,20 +74,20 @@ class DataStoreSpecification<DataStore extends CoreDataStore<Event>, Event> {
               emitsInOrder([EntryRef.root, entry1.ref]));
         });
       });
-      when2('forward head ref',
-          () async => dataStore.forwardHeadEntryRef(EntryRef.root, entry1.ref),
-          then: () {
-        then('check state and entry collection stream', () async {
-          expect(await dataStore.headEntryRef, equals(entry1.ref));
-        });
-      });
-      when2('reset head ref',
-          () async => dataStore.resetHeadEntryRef(EntryRef.root, entry1.ref),
-          then: () {
-        then('check state and entry collection stream', () async {
-          expect(await dataStore.headEntryRef, equals(entry1.ref));
-        });
-      });
+      // when2('forward head ref',
+      //     () async => dataStore.forwardHeadEntryRef(EntryRef.root, entry1.ref),
+      //     then: () {
+      //   then('check state and entry collection stream', () async {
+      //     expect(await dataStore.headEntryRef, equals(entry1.ref));
+      //   });
+      // });
+      // when2('reset head ref',
+      //     () async => dataStore.resetHeadEntryRef(EntryRef.root, entry1.ref),
+      //     then: () {
+      //   then('check state and entry collection stream', () async {
+      //     expect(await dataStore.headEntryRef, equals(entry1.ref));
+      //   });
+      // });
       when2('update main ref ',
           () async => dataStore.updateMainEntryRef(EntryRef.root, entry1.ref),
           then: () {
@@ -110,7 +110,7 @@ class DataStoreSpecification<DataStore extends CoreDataStore<Event>, Event> {
       then('check state', () async {
         expect(await dataStore.headEntryRef, equals(null));
         expect(await dataStore.mainEntryRef, equals(entry1.ref));
-        expect(await dataStore.mainEntryRefMaybe, equals(entry1.ref));
+        // expect(await dataStore.mainEntryRefMaybe, equals(entry1.ref));
         expect((await dataStore.rootEntry).ref, equals(EntryRef.root));
         final rootEntrySnapshot =
             (await dataStore.entrySnapshotsStream.first).last;

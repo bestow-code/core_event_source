@@ -9,7 +9,7 @@ abstract class CoreDataStore<Event>
 abstract class DataStoreRead<Event> {
   /// The current [EntryRef] from the headRef.
   // Future<EntryRef?> get headEntryRefMaybe;
-  Future<EntryRef?> get headEntryRef;
+  Future<HeadEntryRef?> get headEntryRef;
 
   /// The current [EntryRef] from the mainRef.
   Future<EntryRef> get mainEntryRef;
@@ -29,15 +29,15 @@ abstract class DataStoreWrite<Event> {
   Future<void> initialize(Entry<Event> rootEntryIfEmpty);
 
   /// Execute a batch-write of the given [Entry], an [EntryRef], and an [EntryRefLog]
-  Future<void> appendHeadEntry(Entry<Event> entry);
+  Future<void> appendHeadEntry(Entry<Event> entry, HeadEntryRef headEntryRef);
 
-  Future<void> appendMergeEntry(Entry<Event> entry);
-
-  /// Execute a batch-write of an [EntryRef], and a corresponding [EntryRefLog]
-  Future<void> forwardHeadEntryRef(EntryRef previous, EntryRef next);
+  Future<void> appendMergeEntry(Entry<Event> entry, HeadEntryRef headEntryRef);
 
   /// Execute a batch-write of an [EntryRef], and a corresponding [EntryRefLog]
-  Future<void> resetHeadEntryRef(EntryRef previous, EntryRef next);
+  Future<void> forwardHeadEntryRef(EntryRef previous, HeadEntryRef next);
+
+  /// Execute a batch-write of an [EntryRef], and a corresponding [EntryRefLog]
+  Future<void> resetHeadEntryRef(EntryRef previous, HeadEntryRef next);
 
   /// Executes a transactional update of the main [EntryRef] document
   ///

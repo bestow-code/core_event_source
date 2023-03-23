@@ -20,10 +20,10 @@ class IntegrationTestSuite {
     log('hello world');
     // DebugBlocObserver.observe();
     group('all', () {
-      // execute_commands_test.main();
-      // forward_and_follow_test.main();
+      execute_commands_test.main();
+      forward_and_follow_test.main();
       merge_test.main();
-      // firestore_event_store_test.main();
+      firestore_event_store_test.main();
     });
   }
 }

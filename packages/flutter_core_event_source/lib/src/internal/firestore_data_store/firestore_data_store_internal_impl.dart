@@ -14,7 +14,7 @@ class FirestoreEntryStoreImpl<Event>
   final CollectionReference<Entry<Event>> _entryCollectionReference;
   final CollectionReference<EntryRefLog> _mainEntryRefLogCollectionReference;
   final CollectionReference<EntryRefLog> _headEntryRefLogCollectionReference;
-  final CollectionReference<EntryRef> _headRefCollectionReference;
+  final CollectionReference<HeadEntryRef> _headRefCollectionReference;
   final DocumentReference<EntryRef> _mainRefDocumentReference;
   final DocumentReference<EntryRef?> _mainRefMaybeDocumentReference;
   final HasContention _hasContention;
@@ -46,7 +46,7 @@ class FirestoreEntryStoreImpl<Event>
         .doc(headRef)
         .collection('refs')
         .withConverter(
-            fromFirestore: (doc, options) => EntryRef.fromJson(doc.data()!),
+            fromFirestore: (doc, options) => HeadEntryRef.fromJson(doc.data()!),
             toFirestore: (data, options) => data.toJson());
     final mainRefDocumentReference = firestore.doc(path).withConverter(
         fromFirestore: (doc, options) => EntryRef.fromJson(doc.data()!),
@@ -86,7 +86,7 @@ class FirestoreEntryStoreImpl<Event>
 
   FirestoreEntryStoreImpl({
     required CollectionReference<Entry<Event>> entryCollectionReference,
-    required CollectionReference<EntryRef> headRefCollectionReference,
+    required CollectionReference<HeadEntryRef> headRefCollectionReference,
     required DocumentReference<EntryRef> mainRefDocumentReference,
     required DocumentReference<EntryRef?> mainRefMaybeDocumentReference,
     required CollectionReference<EntryRefLog>
@@ -114,7 +114,7 @@ class FirestoreEntryStoreImpl<Event>
       _entryCollectionReference.snapshots(includeMetadataChanges: true);
 
   @override
-  Future<EntryRef?> get headEntryRef => _headRefCollectionReference
+  Future<HeadEntryRef?> get headEntryRef => _headRefCollectionReference
       .orderBy('createdAt', descending: true)
       .limit(1)
       .get()
@@ -157,21 +157,30 @@ class FirestoreEntryStoreImpl<Event>
       _mainRefDocumentReference.snapshots(includeMetadataChanges: true);
 
   @override
-  Future<void> updateHeadEntry(Entry<Event> entry) async {
+  Future<void> updateHeadEntry(
+      Entry<Event> entry, HeadEntryRef headEntryRef) async {
     final batch = _entryCollectionReference.firestore.batch();
-    batch.set(_entryCollectionReference.doc(entry.ref.value), entry);
-    batch.set(_headRefCollectionReference.doc(_idFactory.create()), entry.ref);
-    batch.set(_headEntryRefLogCollectionReference.doc(_idFactory.create()),
+    batch.set<Entry<Event>>(
+        _entryCollectionReference.doc(entry.ref.value), entry);
+    batch.set<HeadEntryRef>(
+        _headRefCollectionReference.doc(_idFactory.create()), headEntryRef);
+    batch.set<EntryRefLog>(
+        _headEntryRefLogCollectionReference.doc(_idFactory.create()),
         _entryRefLogFactory.apply(previous: entry.refs.first, next: entry.ref));
+
     await batch.commit();
   }
 
   @override
-  Future<void> appendMergeEntry(Entry<Event> entry) async {
+  Future<void> appendMergeEntry(
+      Entry<Event> entry, HeadEntryRef headEntryRef) async {
     final batch = _entryCollectionReference.firestore.batch();
-    batch.set(_entryCollectionReference.doc(entry.ref.value), entry);
-    batch.set(_headRefCollectionReference.doc(_idFactory.create()), entry.ref);
-    batch.set(_headEntryRefLogCollectionReference.doc(_idFactory.create()),
+    batch.set<Entry<Event>>(
+        _entryCollectionReference.doc(entry.ref.value), entry);
+    batch.set<HeadEntryRef>(
+        _headRefCollectionReference.doc(_idFactory.create()), headEntryRef);
+    batch.set<EntryRefLog>(
+        _headEntryRefLogCollectionReference.doc(_idFactory.create()),
         _entryRefLogFactory.merge(previous: entry.refs.first, next: entry.ref));
     await batch.commit();
   }
@@ -197,20 +206,22 @@ class FirestoreEntryStoreImpl<Event>
   }
 
   @override
-  Future<void> forwardHeadEntryRef(EntryRef previous, EntryRef next) async {
+  Future<void> forwardHeadEntryRef(EntryRef previous, HeadEntryRef next) async {
     final batch = _headRefCollectionReference.firestore.batch();
-    batch.set(_headRefCollectionReference.doc(_idFactory.create()), next);
-    batch.set(_mainEntryRefLogCollectionReference.doc(_idFactory.create()),
-        _entryRefLogFactory.forward(previous: previous, next: next));
+    batch.set<HeadEntryRef>(
+        _headRefCollectionReference.doc(_idFactory.create()), next);
+    batch.set(_headEntryRefLogCollectionReference.doc(_idFactory.create()),
+        _entryRefLogFactory.forward(previous: previous, next: next.entryRef));
     await batch.commit();
   }
 
   @override
-  Future<void> resetHeadEntryRef(EntryRef previous, EntryRef next) async {
+  Future<void> resetHeadEntryRef(EntryRef previous, HeadEntryRef next) async {
     final batch = _headRefCollectionReference.firestore.batch();
-    batch.set(_headRefCollectionReference.doc(_idFactory.create()), next);
-    batch.set(_mainEntryRefLogCollectionReference.doc(_idFactory.create()),
-        _entryRefLogFactory.reset(previous: previous, next: next));
+    batch.set<HeadEntryRef>(
+        _headRefCollectionReference.doc(_idFactory.create()), next);
+    batch.set(_headEntryRefLogCollectionReference.doc(_idFactory.create()),
+        _entryRefLogFactory.reset(previous: previous, next: next.entryRef));
     await batch.commit();
   }
 

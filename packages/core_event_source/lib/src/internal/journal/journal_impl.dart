@@ -1,22 +1,28 @@
+import '../../../entry.dart';
 import '../../../internal.dart';
 
 class JournalImpl<Event> implements Journal<Event> {
   final CoreDataStore<Event> _adapter;
+  final HeadEntryRefFactory headEntryRefFactory;
 
   JournalImpl({
+    required this.headEntryRefFactory,
     required CoreDataStore<Event> adapter,
   }) : _adapter = adapter;
 
   @override
   Future<void> applyHeadEffect(HeadEffect<Event> effect) async {
     await effect.mapOrNull(
-        append: (append) async => await _adapter.appendHeadEntry(append.entry),
+        append: (append) async => await _adapter.appendHeadEntry(
+            append.entry, headEntryRefFactory.create(append.entry.ref)),
         forward: (forward) async => await _adapter.forwardHeadEntryRef(
-            forward.start, forward.entries.last.ref),
+            forward.start,
+            headEntryRefFactory.create(forward.entries.last.ref)),
         reset: (reset) async => await _adapter.resetHeadEntryRef(
-            reset.start, reset.entries.last.ref),
+            reset.start, headEntryRefFactory.create(reset.entries.last.ref)),
         merge: (merge) async {
-          await _adapter.appendMergeEntry(merge.entry);
+          await _adapter.appendMergeEntry(
+              merge.entry, headEntryRefFactory.create(merge.entry.ref));
         });
   }
 

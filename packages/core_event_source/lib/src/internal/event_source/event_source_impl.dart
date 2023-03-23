@@ -41,8 +41,10 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
   static Future<EventSource<Command, View>> from<Command, Event, State, View>(
       {required CoreDataStore<Event> dataStore,
       required EventSourcedBehavior<Command, Event, State, View> behavior,
+      HeadEntryRefFactory? headEntryRefFactory,
       EntryFactory<Event>? entryFactory}) async {
     entryFactory ??= EntryFactory<Event>.randomRefCreatedNow();
+    headEntryRefFactory ??= HeadEntryRefFactory.basic();
     final initialEntryIfEmpty =
         entryFactory.create(ref: EntryRef.root, refs: [], events: []);
     await dataStore.initialize(initialEntryIfEmpty);
@@ -50,6 +52,7 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
 
     final journal = JournalImpl(
       adapter: dataStore,
+      headEntryRefFactory: headEntryRefFactory,
     );
     headEffectDispatcher.registerJournal(journal);
 
@@ -74,7 +77,8 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
         onError: headEffectDispatcher.propagate);
     headEffectDispatcher.registerHandler(viewValue);
 
-    final headEntryRef = await dataStore.headEntryRef ?? mainEntryRef;
+    final headEntryRef =
+        (await dataStore.headEntryRef)?.entryRef ?? mainEntryRef;
 
     final initialState = headEntryRef == rootEntry.ref
         ? EventSourceState.ready(headEntryRef)

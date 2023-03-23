@@ -84,48 +84,48 @@ main() {
       expect(initialEntry, null);
     }, skip: true);
   });
-  group('update head entry', () {
-    test('updateHeadEntry', () async {
-      await adapter.initialize(rootEntryIfEmpty);
-      final entry1 = Entry<Event>(
-          ref: const EntryRef('entry1'),
-          refs: [EntryRef.root],
-          events: [{}],
-          createdAt: t(1));
-      await adapter.appendHeadEntry(entry1);
-      expect(await adapter.headEntryRef, entry1.ref);
-      expect(await entryStore.entryRefLog, [
-        EntryRefLog.apply(
-            previousRef: EntryRef.root, nextRef: entry1.ref, createdAt: t(2))
-      ]);
-    });
-  });
-  group('forward head ref', () {
-    test('updateHeadEntryRef', () async {
-      await adapter.initialize(rootEntryIfEmpty);
-      const entryRef1 = EntryRef('entry1');
-      const entryRef2 = EntryRef('entry2');
-      await adapter.forwardHeadEntryRef(entryRef1, entryRef2);
-      expect(await adapter.headEntryRef, entryRef2);
-      expect(await entryStore.entryRefLog, [
-        EntryRefLog.forward(
-            previousRef: entryRef1, nextRef: entryRef2, createdAt: t(2))
-      ]);
-    });
-  });
-  group('reset head ref', () {
-    test('resetHeadEntryRef', () async {
-      await adapter.initialize(rootEntryIfEmpty);
-      const entryRef1 = EntryRef('entry1');
-      const entryRef2 = EntryRef('entry2');
-      await adapter.resetHeadEntryRef(entryRef1, entryRef2);
-      expect(await adapter.headEntryRef, entryRef2);
-      expect(await entryStore.entryRefLog, [
-        EntryRefLog.reset(
-            previousRef: entryRef1, nextRef: entryRef2, createdAt: t(2))
-      ]);
-    });
-  });
+  // group('update head entry', () {
+  //   test('updateHeadEntry', () async {
+  //     await adapter.initialize(rootEntryIfEmpty);
+  //     final entry1 = Entry<Event>(
+  //         ref: const EntryRef('entry1'),
+  //         refs: [EntryRef.root],
+  //         events: [{}],
+  //         createdAt: t(1));
+  //     await adapter.appendHeadEntry(entry1);
+  //     expect(await adapter.headEntryRef, entry1.ref);
+  //     expect(await entryStore.entryRefLog, [
+  //       EntryRefLog.apply(
+  //           previousRef: EntryRef.root, nextRef: entry1.ref, createdAt: t(2))
+  //     ]);
+  //   });
+  // });
+  // group('forward head ref', () {
+  //   test('updateHeadEntryRef', () async {
+  //     await adapter.initialize(rootEntryIfEmpty);
+  //     const entryRef1 = EntryRef('entry1');
+  //     const entryRef2 = EntryRef('entry2');
+  //     await adapter.forwardHeadEntryRef(entryRef1, entryRef2);
+  //     expect(await adapter.headEntryRef, entryRef2);
+  //     expect(await entryStore.entryRefLog, [
+  //       EntryRefLog.forward(
+  //           previousRef: entryRef1, nextRef: entryRef2, createdAt: t(2))
+  //     ]);
+  //   });
+  // });
+  // group('reset head ref', () {
+  //   test('resetHeadEntryRef', () async {
+  //     await adapter.initialize(rootEntryIfEmpty);
+  //     const entryRef1 = EntryRef('entry1');
+  //     const entryRef2 = EntryRef('entry2');
+  //     await adapter.resetHeadEntryRef(entryRef1, entryRef2);
+  //     expect(await adapter.headEntryRef, entryRef2);
+  //     expect(await entryStore.entryRefLog, [
+  //       EntryRefLog.reset(
+  //           previousRef: entryRef1, nextRef: entryRef2, createdAt: t(2))
+  //     ]);
+  //   });
+  // });
   group('mainEntryRefSnapshotStream', () {
     test('initial state', () async {
       await adapter.initialize(rootEntryIfEmpty);

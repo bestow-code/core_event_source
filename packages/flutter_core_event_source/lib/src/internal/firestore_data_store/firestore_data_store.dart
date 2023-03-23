@@ -17,7 +17,8 @@ class FirestoreDataStore<Event> implements CoreDataStore<Event> {
               isPending: documentSnapshot.metadata.hasPendingWrites)));
 
   @override
-  Future<EntryRef?> get headEntryRef async => (await entryStore.headEntryRef);
+  Future<HeadEntryRef?> get headEntryRef async =>
+      (await entryStore.headEntryRef);
 
   @override
   Future<Entry<Event>> get rootEntry async => (await entryStore.rootEntry)!;
@@ -36,14 +37,18 @@ class FirestoreDataStore<Event> implements CoreDataStore<Event> {
           .whereNotNull();
 
   @override
-  Future<void> appendMergeEntry(Entry<Event> entry) =>
-      entryStore.appendMergeEntry(entry);
+  Future<void> appendMergeEntry(
+          Entry<Event> entry, HeadEntryRef headEntryRef) =>
+      entryStore.appendMergeEntry(entry, headEntryRef);
   @override
-  Future<void> appendHeadEntry(Entry<Event> entry) =>
-      entryStore.updateHeadEntry(entry);
+  Future<void> appendHeadEntry(Entry<Event> entry, HeadEntryRef headEntryRef) =>
+      entryStore.updateHeadEntry(entry, headEntryRef);
 
   @override
-  Future<void> forwardHeadEntryRef(EntryRef previous, EntryRef next) =>
+  Future<void> forwardHeadEntryRef(
+    EntryRef previous,
+    HeadEntryRef next,
+  ) =>
       entryStore.forwardHeadEntryRef(previous, next);
 
   @override
@@ -51,6 +56,6 @@ class FirestoreDataStore<Event> implements CoreDataStore<Event> {
       entryStore.updateMainEntryRef(previous, next);
 
   @override
-  Future<void> resetHeadEntryRef(EntryRef previous, EntryRef next) =>
+  Future<void> resetHeadEntryRef(EntryRef previous, HeadEntryRef next) =>
       entryStore.resetHeadEntryRef(previous, next);
 }

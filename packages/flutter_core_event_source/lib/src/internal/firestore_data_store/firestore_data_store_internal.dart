@@ -10,19 +10,19 @@ abstract class FirestoreDataStoreInternal<Event> {
 
   Future<EntryRef> get mainEntryRef;
 
-  Future<EntryRef?> get headEntryRef;
+  Future<HeadEntryRef?> get headEntryRef;
 
   Future<Iterable<EntryRefLog>> get entryRefLog;
 
   Future<void> initialize(Entry<Event> initialEntryIfEmpty);
 
-  Future<void> updateHeadEntry(Entry<Event> entry);
+  Future<void> updateHeadEntry(Entry<Event> entry, HeadEntryRef headEntryRef);
 
-  Future<void> appendMergeEntry(Entry<Event> entry);
+  Future<void> appendMergeEntry(Entry<Event> entry, HeadEntryRef headEntryRef);
 
   Future<void> updateMainEntryRef(EntryRef previous, EntryRef next);
 
-  Future<void> forwardHeadEntryRef(EntryRef previous, EntryRef next);
+  Future<void> forwardHeadEntryRef(EntryRef previous, HeadEntryRef next);
 
-  Future<void> resetHeadEntryRef(EntryRef previous, EntryRef next);
+  Future<void> resetHeadEntryRef(EntryRef previous, HeadEntryRef next);
 }
