@@ -1,9 +1,10 @@
 import 'package:logging/logging.dart';
+import 'package:test/test.dart';
 
 initializeDebugLogging() {
   Logger.root.level = Level.INFO;
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
-    print('${record.level.name}: ${record.time}: ${record.message}');
+    printOnFailure('${record.level.name}: ${record.time}: ${record.message}');
   });
 }

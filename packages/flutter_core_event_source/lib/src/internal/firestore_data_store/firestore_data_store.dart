@@ -30,15 +30,14 @@ class FirestoreDataStore<Event> implements CoreDataStore<Event> {
   Future<EntryRef> get mainEntryRef async => await entryStore.mainEntryRef;
 
   @override
-  Future<EntryRef?> get mainEntryRefMaybe async =>
-      (await entryStore.mainEntryRef);
-
-  @override
   Stream<EntryRef> get mainEntryRefStream =>
       entryStore.mainEntryRefSnapshotStream
           .map((snapshot) => snapshot.data())
           .whereNotNull();
 
+  @override
+  Future<void> appendMergeEntry(Entry<Event> entry) =>
+      entryStore.appendMergeEntry(entry);
   @override
   Future<void> appendHeadEntry(Entry<Event> entry) =>
       entryStore.updateHeadEntry(entry);

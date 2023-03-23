@@ -13,7 +13,6 @@ abstract class DataStoreRead<Event> {
 
   /// The current [EntryRef] from the mainRef.
   Future<EntryRef> get mainEntryRef;
-  Future<EntryRef?> get mainEntryRefMaybe;
 
   /// The initial entry
   Future<Entry<Event>> get rootEntry;
@@ -31,6 +30,8 @@ abstract class DataStoreWrite<Event> {
 
   /// Execute a batch-write of the given [Entry], an [EntryRef], and an [EntryRefLog]
   Future<void> appendHeadEntry(Entry<Event> entry);
+
+  Future<void> appendMergeEntry(Entry<Event> entry);
 
   /// Execute a batch-write of an [EntryRef], and a corresponding [EntryRefLog]
   Future<void> forwardHeadEntryRef(EntryRef previous, EntryRef next);

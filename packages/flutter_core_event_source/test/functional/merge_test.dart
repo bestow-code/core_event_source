@@ -1,22 +1,9 @@
-import 'package:core_event_source/common.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:core_event_source_test_util/core_event_source_test_util.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_core_event_source_test_util/flutter_core_event_source_test_util.dart';
 
-typedef Command = JsonObject;
-typedef Event = JsonObject;
-typedef State = int;
-typedef View = int;
-
-main() {
-  // late EventSource<Command, Event> source1;
-  // late EventSource<Command, Event> source2;
-
-  test('merge', () {});
-  // blocTest('merge',
-  //     setUp: () async {
-  //       source1 = buildTestEventSourceInstance(headRefId: '1');
-  //       source2 = buildTestEventSourceInstance(headRefId: '2');
-  //     },
-  //     build: () => source2.view,
-  //     act: (_) => source1.execute([{}]),
-  //     expect: () => [4]);
-}
+main() async => MergeTestGroup(
+      FirestoreTestEventStoreFactory(
+        () async => await Firebase.initializeApp(),
+      ),
+    ).run();

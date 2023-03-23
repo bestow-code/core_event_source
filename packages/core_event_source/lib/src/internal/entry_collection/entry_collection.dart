@@ -8,7 +8,8 @@ abstract class EntryCollection<Event>
   BlocBase get updates;
 
   /// Builds a HeadEffect to model a merge of [headRef] with the current main entry ref
-  HeadEffect<Event> buildMergeHeadEffect(EntryRef headRef);
+  HeadEffect<Event> buildMergeHeadEffect(
+      EntryRef headRef, EntryFactory<Event> entryFactory);
 
   HeadEffect<Event> buildInitialHeadEffect(EntryRef headRef);
 

@@ -7,5 +7,6 @@ abstract class Value<Event, T> implements HeadEffectHandler<Event> {
 
   T get current;
 
+  void start();
   Future<void> close();
 }

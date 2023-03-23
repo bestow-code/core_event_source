@@ -25,14 +25,13 @@ class ForwardAndFollowTestGroup extends IntegrationTestGroup {
       setUp(() async =>
           source1 = await build(eventStore, sourcePath, headRefName1));
 
-      blocTest2(
+      blocTest(
         'execute commands on separate headRef instances, in sequence',
         setUp: () async {
           source1.start();
-
           await source1.isReady;
           final done = source1.stream.take(1).first;
-          source1.execute([{}]);
+          source1.execute([FakeCommand()]);
           await done;
           await source1.close();
           source2 = await build(eventStore, sourcePath, headRefName2);
@@ -41,10 +40,13 @@ class ForwardAndFollowTestGroup extends IntegrationTestGroup {
         act: (_) async {
           source2.start();
           await source2.isReady;
-          source2.execute([{}]);
+          source2.execute([FakeCommand()]);
         },
         wait: const Duration(milliseconds: 10),
-        expect: () => [1, 2, 4],
+        expect: () => [
+          FakeView(2),
+          FakeView(4),
+        ],
         tearDown: () async => await source2.close(),
       );
     });

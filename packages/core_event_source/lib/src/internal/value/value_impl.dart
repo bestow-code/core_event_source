@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:core_event_source/event_sourced_behavior.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,6 +14,8 @@ class ValueImpl<Event, T> extends BlocBase<ValueState<Event, T>>
   final ValueHandler<Event, T> valueHandler;
   final void Function(Object error, StackTrace stackTrace) _onError;
 
+  late StreamSubscription subscription;
+
   factory ValueImpl.initial(
     EntryRef root,
     T value,
@@ -25,13 +29,20 @@ class ValueImpl<Event, T> extends BlocBase<ValueState<Event, T>>
     super.state,
     this.valueHandler, {
     required void Function(Object error, StackTrace stackTrace) onError,
-  }) : _onError = onError;
+  }) : _onError = onError {
+    emit(state);
+  }
 
   @override
   T get current => state.value;
 
   @override
   BlocBase<T> get source => _stateStreamableSource;
+
+  void start() {
+    _stateStreamableSource.start();
+    subscription = stream.listen(emit);
+  }
 
   late final _ValueStreamableSource<T> _stateStreamableSource =
       _ValueStreamableSource(
@@ -47,6 +58,13 @@ class ValueImpl<Event, T> extends BlocBase<ValueState<Event, T>>
   void onError(Object error, StackTrace stackTrace) {
     super.onError(error, stackTrace);
     _onError(error, stackTrace);
+  }
+
+  @override
+  Future<void> close() async {
+    await subscription.cancel();
+    await _stateStreamableSource.close();
+    await super.close();
   }
 }
 
@@ -81,6 +99,18 @@ class ValueState<Event, T> with _$ValueState<Event, T> {
         return next;
       });
       return copyWith(head: forward.entries.last.ref, values: nextValues);
+    }, merge: (merge) {
+      final nextValues = Map.of(values);
+      nextValues.removeWhere((key, value) => !merge.base.contains(key));
+      final start = values[merge.base.last] as T;
+
+      merge.entries.fold(start, (previousValue, element) {
+        final next = _applyEvents(previousValue, element.events, valueHandler);
+        nextValues[element.ref] = next;
+        return next;
+      });
+      return copyWith(head: merge.entries.last.ref, values: nextValues);
+      // throw UnimplementedError();
     }, reset: (reset) {
       final nextValues = Map.of(values);
       nextValues.removeWhere((key, value) => !reset.base.contains(key));
@@ -105,7 +135,22 @@ class ValueState<Event, T> with _$ValueState<Event, T> {
 }
 
 class _ValueStreamableSource<T> extends BlocBase<T> {
-  _ValueStreamableSource(super.state, Stream<T> stream) {
-    stream.listen((emit));
+  final Stream<T> _stream;
+
+  late StreamSubscription<T> subscription;
+
+  _ValueStreamableSource(super.state, Stream<T> stream) : _stream = stream;
+
+  void start() {
+    subscription = _stream.listen((v) {
+      emit(v);
+      print(v);
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    await subscription.cancel();
+    await super.close();
   }
 }

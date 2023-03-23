@@ -22,6 +22,15 @@ class EntryRefLogFactory {
         nextRef: next,
         createdAt: _dateTimeFactory.create(),
       );
+  EntryRefLog merge({
+    required EntryRef previous,
+    required EntryRef next,
+  }) =>
+      EntryRefLog.merge(
+        previousRef: previous,
+        nextRef: next,
+        createdAt: _dateTimeFactory.create(),
+      );
 
   EntryRefLog reset({
     required EntryRef previous,

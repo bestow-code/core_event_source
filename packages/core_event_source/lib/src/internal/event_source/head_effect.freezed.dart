@@ -24,6 +24,9 @@ mixin _$HeadEffect<Event> {
     required TResult Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)
         reset,
+    required TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)
+        merge,
     required TResult Function() none,
   }) =>
       throw _privateConstructorUsedError;
@@ -34,6 +37,9 @@ mixin _$HeadEffect<Event> {
     TResult? Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)?
         reset,
+    TResult? Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
     TResult? Function()? none,
   }) =>
       throw _privateConstructorUsedError;
@@ -44,6 +50,9 @@ mixin _$HeadEffect<Event> {
     TResult Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)?
         reset,
+    TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
     TResult Function()? none,
     required TResult orElse(),
   }) =>
@@ -53,6 +62,7 @@ mixin _$HeadEffect<Event> {
     required TResult Function(HeadEffectAppend<Event> value) append,
     required TResult Function(HeadEffectForward<Event> value) forward,
     required TResult Function(HeadEffectReset<Event> value) reset,
+    required TResult Function(HeadEffectMerge<Event> value) merge,
     required TResult Function(HeadEffectNone<Event> value) none,
   }) =>
       throw _privateConstructorUsedError;
@@ -61,6 +71,7 @@ mixin _$HeadEffect<Event> {
     TResult? Function(HeadEffectAppend<Event> value)? append,
     TResult? Function(HeadEffectForward<Event> value)? forward,
     TResult? Function(HeadEffectReset<Event> value)? reset,
+    TResult? Function(HeadEffectMerge<Event> value)? merge,
     TResult? Function(HeadEffectNone<Event> value)? none,
   }) =>
       throw _privateConstructorUsedError;
@@ -69,6 +80,7 @@ mixin _$HeadEffect<Event> {
     TResult Function(HeadEffectAppend<Event> value)? append,
     TResult Function(HeadEffectForward<Event> value)? forward,
     TResult Function(HeadEffectReset<Event> value)? reset,
+    TResult Function(HeadEffectMerge<Event> value)? merge,
     TResult Function(HeadEffectNone<Event> value)? none,
     required TResult orElse(),
   }) =>
@@ -191,6 +203,9 @@ class _$HeadEffectAppend<Event> implements HeadEffectAppend<Event> {
     required TResult Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)
         reset,
+    required TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)
+        merge,
     required TResult Function() none,
   }) {
     return append(start, entry);
@@ -204,6 +219,9 @@ class _$HeadEffectAppend<Event> implements HeadEffectAppend<Event> {
     TResult? Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)?
         reset,
+    TResult? Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
     TResult? Function()? none,
   }) {
     return append?.call(start, entry);
@@ -217,6 +235,9 @@ class _$HeadEffectAppend<Event> implements HeadEffectAppend<Event> {
     TResult Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)?
         reset,
+    TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
     TResult Function()? none,
     required TResult orElse(),
   }) {
@@ -232,6 +253,7 @@ class _$HeadEffectAppend<Event> implements HeadEffectAppend<Event> {
     required TResult Function(HeadEffectAppend<Event> value) append,
     required TResult Function(HeadEffectForward<Event> value) forward,
     required TResult Function(HeadEffectReset<Event> value) reset,
+    required TResult Function(HeadEffectMerge<Event> value) merge,
     required TResult Function(HeadEffectNone<Event> value) none,
   }) {
     return append(this);
@@ -243,6 +265,7 @@ class _$HeadEffectAppend<Event> implements HeadEffectAppend<Event> {
     TResult? Function(HeadEffectAppend<Event> value)? append,
     TResult? Function(HeadEffectForward<Event> value)? forward,
     TResult? Function(HeadEffectReset<Event> value)? reset,
+    TResult? Function(HeadEffectMerge<Event> value)? merge,
     TResult? Function(HeadEffectNone<Event> value)? none,
   }) {
     return append?.call(this);
@@ -254,6 +277,7 @@ class _$HeadEffectAppend<Event> implements HeadEffectAppend<Event> {
     TResult Function(HeadEffectAppend<Event> value)? append,
     TResult Function(HeadEffectForward<Event> value)? forward,
     TResult Function(HeadEffectReset<Event> value)? reset,
+    TResult Function(HeadEffectMerge<Event> value)? merge,
     TResult Function(HeadEffectNone<Event> value)? none,
     required TResult orElse(),
   }) {
@@ -366,6 +390,9 @@ class _$HeadEffectForward<Event> implements HeadEffectForward<Event> {
     required TResult Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)
         reset,
+    required TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)
+        merge,
     required TResult Function() none,
   }) {
     return forward(start, entries);
@@ -379,6 +406,9 @@ class _$HeadEffectForward<Event> implements HeadEffectForward<Event> {
     TResult? Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)?
         reset,
+    TResult? Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
     TResult? Function()? none,
   }) {
     return forward?.call(start, entries);
@@ -392,6 +422,9 @@ class _$HeadEffectForward<Event> implements HeadEffectForward<Event> {
     TResult Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)?
         reset,
+    TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
     TResult Function()? none,
     required TResult orElse(),
   }) {
@@ -407,6 +440,7 @@ class _$HeadEffectForward<Event> implements HeadEffectForward<Event> {
     required TResult Function(HeadEffectAppend<Event> value) append,
     required TResult Function(HeadEffectForward<Event> value) forward,
     required TResult Function(HeadEffectReset<Event> value) reset,
+    required TResult Function(HeadEffectMerge<Event> value) merge,
     required TResult Function(HeadEffectNone<Event> value) none,
   }) {
     return forward(this);
@@ -418,6 +452,7 @@ class _$HeadEffectForward<Event> implements HeadEffectForward<Event> {
     TResult? Function(HeadEffectAppend<Event> value)? append,
     TResult? Function(HeadEffectForward<Event> value)? forward,
     TResult? Function(HeadEffectReset<Event> value)? reset,
+    TResult? Function(HeadEffectMerge<Event> value)? merge,
     TResult? Function(HeadEffectNone<Event> value)? none,
   }) {
     return forward?.call(this);
@@ -429,6 +464,7 @@ class _$HeadEffectForward<Event> implements HeadEffectForward<Event> {
     TResult Function(HeadEffectAppend<Event> value)? append,
     TResult Function(HeadEffectForward<Event> value)? forward,
     TResult Function(HeadEffectReset<Event> value)? reset,
+    TResult Function(HeadEffectMerge<Event> value)? merge,
     TResult Function(HeadEffectNone<Event> value)? none,
     required TResult orElse(),
   }) {
@@ -556,6 +592,9 @@ class _$HeadEffectReset<Event> implements HeadEffectReset<Event> {
     required TResult Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)
         reset,
+    required TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)
+        merge,
     required TResult Function() none,
   }) {
     return reset(start, base, entries);
@@ -569,6 +608,9 @@ class _$HeadEffectReset<Event> implements HeadEffectReset<Event> {
     TResult? Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)?
         reset,
+    TResult? Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
     TResult? Function()? none,
   }) {
     return reset?.call(start, base, entries);
@@ -582,6 +624,9 @@ class _$HeadEffectReset<Event> implements HeadEffectReset<Event> {
     TResult Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)?
         reset,
+    TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
     TResult Function()? none,
     required TResult orElse(),
   }) {
@@ -597,6 +642,7 @@ class _$HeadEffectReset<Event> implements HeadEffectReset<Event> {
     required TResult Function(HeadEffectAppend<Event> value) append,
     required TResult Function(HeadEffectForward<Event> value) forward,
     required TResult Function(HeadEffectReset<Event> value) reset,
+    required TResult Function(HeadEffectMerge<Event> value) merge,
     required TResult Function(HeadEffectNone<Event> value) none,
   }) {
     return reset(this);
@@ -608,6 +654,7 @@ class _$HeadEffectReset<Event> implements HeadEffectReset<Event> {
     TResult? Function(HeadEffectAppend<Event> value)? append,
     TResult? Function(HeadEffectForward<Event> value)? forward,
     TResult? Function(HeadEffectReset<Event> value)? reset,
+    TResult? Function(HeadEffectMerge<Event> value)? merge,
     TResult? Function(HeadEffectNone<Event> value)? none,
   }) {
     return reset?.call(this);
@@ -619,6 +666,7 @@ class _$HeadEffectReset<Event> implements HeadEffectReset<Event> {
     TResult Function(HeadEffectAppend<Event> value)? append,
     TResult Function(HeadEffectForward<Event> value)? forward,
     TResult Function(HeadEffectReset<Event> value)? reset,
+    TResult Function(HeadEffectMerge<Event> value)? merge,
     TResult Function(HeadEffectNone<Event> value)? none,
     required TResult orElse(),
   }) {
@@ -638,6 +686,229 @@ abstract class HeadEffectReset<Event> implements HeadEffect<Event> {
   Iterable<Entry<Event>> get entries;
   @JsonKey(ignore: true)
   _$$HeadEffectResetCopyWith<Event, _$HeadEffectReset<Event>> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$HeadEffectMergeCopyWith<Event, $Res> {
+  factory _$$HeadEffectMergeCopyWith(_$HeadEffectMerge<Event> value,
+          $Res Function(_$HeadEffectMerge<Event>) then) =
+      __$$HeadEffectMergeCopyWithImpl<Event, $Res>;
+  @useResult
+  $Res call(
+      {EntryRef start,
+      Iterable<EntryRef> base,
+      Iterable<Entry<Event>> entries,
+      Entry<Event> entry});
+
+  $EntryRefCopyWith<$Res> get start;
+  $EntryCopyWith<Event, $Res> get entry;
+}
+
+/// @nodoc
+class __$$HeadEffectMergeCopyWithImpl<Event, $Res>
+    extends _$HeadEffectCopyWithImpl<Event, $Res, _$HeadEffectMerge<Event>>
+    implements _$$HeadEffectMergeCopyWith<Event, $Res> {
+  __$$HeadEffectMergeCopyWithImpl(_$HeadEffectMerge<Event> _value,
+      $Res Function(_$HeadEffectMerge<Event>) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? start = null,
+    Object? base = null,
+    Object? entries = null,
+    Object? entry = null,
+  }) {
+    return _then(_$HeadEffectMerge<Event>(
+      null == start
+          ? _value.start
+          : start // ignore: cast_nullable_to_non_nullable
+              as EntryRef,
+      null == base
+          ? _value.base
+          : base // ignore: cast_nullable_to_non_nullable
+              as Iterable<EntryRef>,
+      null == entries
+          ? _value.entries
+          : entries // ignore: cast_nullable_to_non_nullable
+              as Iterable<Entry<Event>>,
+      entry: null == entry
+          ? _value.entry
+          : entry // ignore: cast_nullable_to_non_nullable
+              as Entry<Event>,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $EntryRefCopyWith<$Res> get start {
+    return $EntryRefCopyWith<$Res>(_value.start, (value) {
+      return _then(_value.copyWith(start: value));
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $EntryCopyWith<Event, $Res> get entry {
+    return $EntryCopyWith<Event, $Res>(_value.entry, (value) {
+      return _then(_value.copyWith(entry: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$HeadEffectMerge<Event> implements HeadEffectMerge<Event> {
+  _$HeadEffectMerge(this.start, this.base, this.entries, {required this.entry})
+      : assert(entries.isNotEmpty);
+
+  @override
+  final EntryRef start;
+  @override
+  final Iterable<EntryRef> base;
+  @override
+  final Iterable<Entry<Event>> entries;
+  @override
+  final Entry<Event> entry;
+
+  @override
+  String toString() {
+    return 'HeadEffect<$Event>.merge(start: $start, base: $base, entries: $entries, entry: $entry)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$HeadEffectMerge<Event> &&
+            (identical(other.start, start) || other.start == start) &&
+            const DeepCollectionEquality().equals(other.base, base) &&
+            const DeepCollectionEquality().equals(other.entries, entries) &&
+            (identical(other.entry, entry) || other.entry == entry));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      start,
+      const DeepCollectionEquality().hash(base),
+      const DeepCollectionEquality().hash(entries),
+      entry);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$HeadEffectMergeCopyWith<Event, _$HeadEffectMerge<Event>> get copyWith =>
+      __$$HeadEffectMergeCopyWithImpl<Event, _$HeadEffectMerge<Event>>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(EntryRef start, Entry<Event> entry) append,
+    required TResult Function(EntryRef start, Iterable<Entry<Event>> entries)
+        forward,
+    required TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries)
+        reset,
+    required TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)
+        merge,
+    required TResult Function() none,
+  }) {
+    return merge(start, base, entries, entry);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(EntryRef start, Entry<Event> entry)? append,
+    TResult? Function(EntryRef start, Iterable<Entry<Event>> entries)? forward,
+    TResult? Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries)?
+        reset,
+    TResult? Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
+    TResult? Function()? none,
+  }) {
+    return merge?.call(start, base, entries, entry);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(EntryRef start, Entry<Event> entry)? append,
+    TResult Function(EntryRef start, Iterable<Entry<Event>> entries)? forward,
+    TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries)?
+        reset,
+    TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
+    TResult Function()? none,
+    required TResult orElse(),
+  }) {
+    if (merge != null) {
+      return merge(start, base, entries, entry);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(HeadEffectAppend<Event> value) append,
+    required TResult Function(HeadEffectForward<Event> value) forward,
+    required TResult Function(HeadEffectReset<Event> value) reset,
+    required TResult Function(HeadEffectMerge<Event> value) merge,
+    required TResult Function(HeadEffectNone<Event> value) none,
+  }) {
+    return merge(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(HeadEffectAppend<Event> value)? append,
+    TResult? Function(HeadEffectForward<Event> value)? forward,
+    TResult? Function(HeadEffectReset<Event> value)? reset,
+    TResult? Function(HeadEffectMerge<Event> value)? merge,
+    TResult? Function(HeadEffectNone<Event> value)? none,
+  }) {
+    return merge?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(HeadEffectAppend<Event> value)? append,
+    TResult Function(HeadEffectForward<Event> value)? forward,
+    TResult Function(HeadEffectReset<Event> value)? reset,
+    TResult Function(HeadEffectMerge<Event> value)? merge,
+    TResult Function(HeadEffectNone<Event> value)? none,
+    required TResult orElse(),
+  }) {
+    if (merge != null) {
+      return merge(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class HeadEffectMerge<Event> implements HeadEffect<Event> {
+  factory HeadEffectMerge(final EntryRef start, final Iterable<EntryRef> base,
+      final Iterable<Entry<Event>> entries,
+      {required final Entry<Event> entry}) = _$HeadEffectMerge<Event>;
+
+  EntryRef get start;
+  Iterable<EntryRef> get base;
+  Iterable<Entry<Event>> get entries;
+  Entry<Event> get entry;
+  @JsonKey(ignore: true)
+  _$$HeadEffectMergeCopyWith<Event, _$HeadEffectMerge<Event>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -685,6 +956,9 @@ class _$HeadEffectNone<Event> implements HeadEffectNone<Event> {
     required TResult Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)
         reset,
+    required TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)
+        merge,
     required TResult Function() none,
   }) {
     return none();
@@ -698,6 +972,9 @@ class _$HeadEffectNone<Event> implements HeadEffectNone<Event> {
     TResult? Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)?
         reset,
+    TResult? Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
     TResult? Function()? none,
   }) {
     return none?.call();
@@ -711,6 +988,9 @@ class _$HeadEffectNone<Event> implements HeadEffectNone<Event> {
     TResult Function(EntryRef start, Iterable<EntryRef> base,
             Iterable<Entry<Event>> entries)?
         reset,
+    TResult Function(EntryRef start, Iterable<EntryRef> base,
+            Iterable<Entry<Event>> entries, Entry<Event> entry)?
+        merge,
     TResult Function()? none,
     required TResult orElse(),
   }) {
@@ -726,6 +1006,7 @@ class _$HeadEffectNone<Event> implements HeadEffectNone<Event> {
     required TResult Function(HeadEffectAppend<Event> value) append,
     required TResult Function(HeadEffectForward<Event> value) forward,
     required TResult Function(HeadEffectReset<Event> value) reset,
+    required TResult Function(HeadEffectMerge<Event> value) merge,
     required TResult Function(HeadEffectNone<Event> value) none,
   }) {
     return none(this);
@@ -737,6 +1018,7 @@ class _$HeadEffectNone<Event> implements HeadEffectNone<Event> {
     TResult? Function(HeadEffectAppend<Event> value)? append,
     TResult? Function(HeadEffectForward<Event> value)? forward,
     TResult? Function(HeadEffectReset<Event> value)? reset,
+    TResult? Function(HeadEffectMerge<Event> value)? merge,
     TResult? Function(HeadEffectNone<Event> value)? none,
   }) {
     return none?.call(this);
@@ -748,6 +1030,7 @@ class _$HeadEffectNone<Event> implements HeadEffectNone<Event> {
     TResult Function(HeadEffectAppend<Event> value)? append,
     TResult Function(HeadEffectForward<Event> value)? forward,
     TResult Function(HeadEffectReset<Event> value)? reset,
+    TResult Function(HeadEffectMerge<Event> value)? merge,
     TResult Function(HeadEffectNone<Event> value)? none,
     required TResult orElse(),
   }) {

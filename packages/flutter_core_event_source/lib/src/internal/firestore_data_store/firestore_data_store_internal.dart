@@ -18,6 +18,8 @@ abstract class FirestoreDataStoreInternal<Event> {
 
   Future<void> updateHeadEntry(Entry<Event> entry);
 
+  Future<void> appendMergeEntry(Entry<Event> entry);
+
   Future<void> updateMainEntryRef(EntryRef previous, EntryRef next);
 
   Future<void> forwardHeadEntryRef(EntryRef previous, EntryRef next);

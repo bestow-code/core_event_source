@@ -6,8 +6,6 @@ import 'package:core_event_source/internal.dart';
 import 'package:logging/logging.dart';
 import 'package:test/test.dart';
 
-import '../../../util/logging.dart';
-
 // class StreamMock<T> extends Mock implements Stream<T> {}
 // a-b-c-f
 //  -d-e
@@ -33,7 +31,7 @@ Map<EntryRef, Entry<Event>> buildTestEntries<Event>(
 final logger = Logger('test111');
 
 main() {
-  initializeDebugLogging();
+  // initializeDebugLogging();
   logger.fine('hello world');
   late EntryCollectionImpl<Event> entryCollection;
 
@@ -160,7 +158,9 @@ main() {
           },
           build: () => entryCollection,
           verify: (entryCollection) {
-            expect(entryCollection.buildMergeHeadEffect(mainEntryRef),
+            expect(
+                entryCollection.buildMergeHeadEffect(
+                    mainEntryRef, entryFactory),
                 HeadEffect<Event>.none());
           });
       blocTest('mainEntryRef unknown',
@@ -177,7 +177,9 @@ main() {
           },
           build: () => entryCollection,
           verify: (entryCollection) {
-            expect(entryCollection.buildMergeHeadEffect(const EntryRef('b')),
+            expect(
+                entryCollection.buildMergeHeadEffect(
+                    const EntryRef('b'), entryFactory),
                 HeadEffect<Event>.none());
           });
       blocTest('headEntryRef unknown',
@@ -193,7 +195,9 @@ main() {
           },
           build: () => entryCollection,
           verify: (entryCollection) {
-            expect(entryCollection.buildMergeHeadEffect(const EntryRef('c')),
+            expect(
+                entryCollection.buildMergeHeadEffect(
+                    const EntryRef('c'), entryFactory),
                 HeadEffect<Event>.none());
           });
       blocTest('headEntryRef and mainEntryRef diverged',
@@ -211,7 +215,8 @@ main() {
           build: () => entryCollection,
           verify: (entryCollection) {
             expect(
-                entryCollection.buildMergeHeadEffect(const EntryRef('c')),
+                entryCollection.buildMergeHeadEffect(
+                    const EntryRef('c'), entryFactory),
                 HeadEffect<Event>.reset(const EntryRef('c'), [
                   const EntryRef('a')
                 ], [
@@ -233,7 +238,8 @@ main() {
           build: () => entryCollection,
           verify: (entryCollection) {
             expect(
-                entryCollection.buildMergeHeadEffect(const EntryRef('a')),
+                entryCollection.buildMergeHeadEffect(
+                    const EntryRef('a'), entryFactory),
                 HeadEffect<Event>.forward(
                   const EntryRef('a'),
                   [entryCollection.state.entries[const EntryRef('b')]!],
@@ -252,7 +258,9 @@ main() {
           },
           build: () => entryCollection,
           verify: (entryCollection) {
-            expect(entryCollection.buildMergeHeadEffect(const EntryRef('b')),
+            expect(
+                entryCollection.buildMergeHeadEffect(
+                    const EntryRef('b'), entryFactory),
                 HeadEffect<Event>.none());
           });
     });

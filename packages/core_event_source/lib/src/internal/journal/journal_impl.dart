@@ -14,7 +14,10 @@ class JournalImpl<Event> implements Journal<Event> {
         forward: (forward) async => await _adapter.forwardHeadEntryRef(
             forward.start, forward.entries.last.ref),
         reset: (reset) async => await _adapter.resetHeadEntryRef(
-            reset.start, reset.entries.last.ref));
+            reset.start, reset.entries.last.ref),
+        merge: (merge) async {
+          await _adapter.appendMergeEntry(merge.entry);
+        });
   }
 
   @override

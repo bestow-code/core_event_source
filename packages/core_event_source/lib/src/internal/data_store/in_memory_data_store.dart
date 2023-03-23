@@ -63,6 +63,12 @@ class InMemoryDataStore<Event> implements CoreDataStore<Event> {
       _internal.addEntrySnapshots(snapshots);
 
   void setMainEntryRef(EntryRef ref) => _internal.setMainEntryRef(ref);
+
+  @override
+  Future<void> appendMergeEntry(Entry<Event> entry) {
+    // TODO: implement appendMergeEntry
+    throw UnimplementedError();
+  }
 }
 
 class InMemoryDataStoreInternal<Event> {

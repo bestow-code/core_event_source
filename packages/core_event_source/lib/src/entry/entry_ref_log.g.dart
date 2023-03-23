@@ -41,6 +41,23 @@ Map<String, dynamic> _$$EntryRefLogForwardToJson(
       'runtimeType': instance.$type,
     };
 
+_$EntryRefLogMerge _$$EntryRefLogMergeFromJson(Map<String, dynamic> json) =>
+    _$EntryRefLogMerge(
+      previousRef:
+          EntryRef.fromJson(json['previousRef'] as Map<String, dynamic>),
+      nextRef: EntryRef.fromJson(json['nextRef'] as Map<String, dynamic>),
+      createdAt: const DateTimeConverter().fromJson(json['createdAt'] as int),
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$EntryRefLogMergeToJson(_$EntryRefLogMerge instance) =>
+    <String, dynamic>{
+      'previousRef': instance.previousRef.toJson(),
+      'nextRef': instance.nextRef.toJson(),
+      'createdAt': const DateTimeConverter().toJson(instance.createdAt),
+      'runtimeType': instance.$type,
+    };
+
 _$EntryRefLogFastForward _$$EntryRefLogFastForwardFromJson(
         Map<String, dynamic> json) =>
     _$EntryRefLogFastForward(

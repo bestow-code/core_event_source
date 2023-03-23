@@ -62,10 +62,6 @@ index_generator:
         - src/internal
 
     - path: test
-      name: test_util
-      include:
-        - util
-    - path: test
       name: test_doubles
       include:
         - test_doubles

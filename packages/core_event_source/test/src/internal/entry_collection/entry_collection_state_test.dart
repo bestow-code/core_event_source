@@ -87,7 +87,7 @@ main() {
         final mainEntryRef = initialEntry.ref;
         final collection = buildEntryCollection(initialEntry, mainEntryRef,
             Map.fromEntries(entries.map((e) => MapEntry(e.ref, e))));
-        final effect = collection.buildMergeHeadEffect(headRef);
+        final effect = collection.buildMergeHeadEffect(headRef, entryFactory);
         expect(effect, HeadEffect.none());
       });
     });
@@ -110,7 +110,7 @@ main() {
           const mainEntryRef = refB;
           final collection =
               buildEntryCollection(initialEntry, mainEntryRef, entriesMap);
-          final effect = collection.buildMergeHeadEffect(headRef);
+          final effect = collection.buildMergeHeadEffect(headRef, entryFactory);
           expect(effect, HeadEffect.forward(headRef, [entryB]));
         });
       },
@@ -138,7 +138,7 @@ main() {
           const mainEntryRef = refB;
           final collection =
               buildEntryCollection(initialEntry, mainEntryRef, entriesMap);
-          final effect = collection.buildMergeHeadEffect(headRef);
+          final effect = collection.buildMergeHeadEffect(headRef, entryFactory);
           expect(effect, HeadEffect.reset(headRef, [refA], [entryB, entryC]));
         },
         skip: true,
@@ -162,7 +162,7 @@ main() {
           const mainEntryRef = refB;
           final collection =
               buildEntryCollection(initialEntry, mainEntryRef, entriesMap);
-          final effect = collection.buildMergeHeadEffect(headRef);
+          final effect = collection.buildMergeHeadEffect(headRef, entryFactory);
           expect(effect, HeadEffect.none());
         },
         skip: true,

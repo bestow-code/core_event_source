@@ -52,8 +52,9 @@ class EntryCollectionImpl<Event> extends BlocBase<EntryCollectionState<Event>>
   }
 
   @override
-  HeadEffect<Event> buildMergeHeadEffect(EntryRef headEntryRef) =>
-      state.buildFollowMainEffect(_rootEntry, headEntryRef);
+  HeadEffect<Event> buildMergeHeadEffect(
+          EntryRef headEntryRef, EntryFactory<Event> entryFactory) =>
+      state.buildFollowMainEffect(_rootEntry, headEntryRef, entryFactory);
 
   @override
   void apply(HeadEffect<Event> effect) =>

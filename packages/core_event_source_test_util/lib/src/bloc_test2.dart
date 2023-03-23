@@ -125,6 +125,24 @@ class _TestBlocObserver extends BlocObserver {
     _onError(error);
     super.onError(bloc, error, stackTrace);
   }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    _localObserver.onTransition(bloc, transition);
+    super.onTransition(bloc, transition);
+  }
+
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    _localObserver.onChange(bloc, change);
+    super.onChange(bloc, change);
+  }
+
+  @override
+  void onClose(BlocBase bloc) {
+    _localObserver.onClose(bloc);
+    super.onClose(bloc);
+  }
 }
 
 String _diff({required dynamic expected, required dynamic actual}) {

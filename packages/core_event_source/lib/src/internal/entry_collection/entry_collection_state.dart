@@ -70,8 +70,13 @@ abstract class EntrySnapshotsHandler<Event>
 
 abstract class FollowMainEffectBuilder<Event>
     implements _$EntryCollectionState<Event> {
+  //
   MainRefEffect<Event> buildMainEntryEffect(
       Entry<Event> rootEntry, EntryRef headEntryRef) {
+    if (mainEntryRef == headEntryRef) {
+      return MainRefEffect.none();
+    }
+
     final mainEntry = entries[mainEntryRef];
     if (mainEntry == null) {
       return MainRefEffect.none();
@@ -100,8 +105,8 @@ abstract class FollowMainEffectBuilder<Event>
     }
   }
 
-  HeadEffect<Event> buildFollowMainEffect(
-      Entry<Event> rootEntry, EntryRef headEntryRef) {
+  HeadEffect<Event> buildFollowMainEffect(Entry<Event> rootEntry,
+      EntryRef headEntryRef, EntryFactory<Event> entryFactory) {
     // up-to-date
     if (headEntryRef == mainEntryRef) {
       return HeadEffect.none();
@@ -129,14 +134,17 @@ abstract class FollowMainEffectBuilder<Event>
       if (mainEntryPath.length == matchCount) {
         return HeadEffect.none();
       } else {
+        final mergeEntry =
+            entryFactory.create(refs: [headEntryRef, mainEntryRef], events: []);
         final resetPath = ({
           ...headEntryPath.skip(matchCount),
-          ...mainEntryPath.skip(matchCount)
+          ...mainEntryPath.skip(matchCount),
+          mergeEntry
         }..sort())
             .toList();
-
-        return HeadEffect.reset(headEntryRef,
-            headEntryPath.take(matchCount).map((e) => e.ref), resetPath);
+        return HeadEffect.merge(headEntryRef,
+            headEntryPath.take(matchCount).map((e) => e.ref), resetPath,
+            entry: mergeEntry);
       }
     } else {
       return HeadEffect.forward(

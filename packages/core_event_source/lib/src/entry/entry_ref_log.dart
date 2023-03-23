@@ -19,6 +19,11 @@ class EntryRefLog with _$EntryRefLog {
     required EntryRef nextRef,
     @DateTimeConverter() required DateTime createdAt,
   }) = EntryRefLogForward;
+  factory EntryRefLog.merge({
+    required EntryRef previousRef,
+    required EntryRef nextRef,
+    @DateTimeConverter() required DateTime createdAt,
+  }) = EntryRefLogMerge;
 
   factory EntryRefLog.apply({
     required EntryRef previousRef,

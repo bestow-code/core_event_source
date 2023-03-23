@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:core_event_source/entry.dart';
@@ -17,6 +19,7 @@ class MainRefUpdateDispatcherImpl<Command, Event, State>
     on<MainRefUpdateDispatcherEventUpdate>((event, emit) async {
       _source.state.mapOrNull(ready: (ready) async {
         final effect = _entryCollection.buildMainRefEffect(ready.entryRef);
+        log('mainref effect', error: effect);
         emit(effect);
       });
     }, transformer: restartable());

@@ -6,8 +6,8 @@ import '../event_source_impl/test_common.dart';
 
 void main() {
   group('InMemoryDataStore', () {
-    final dataStoreInternal = InMemoryDataStoreInternal<Event>.from();
-    final dataStore = InMemoryDataStore<Event>(
+    final dataStoreInternal = InMemoryDataStoreInternal<FakeEvent>.from();
+    final dataStore = InMemoryDataStore<FakeEvent>(
         headRefName: '1', dataStoreInternal: dataStoreInternal);
     final specification = DataStoreSpecification(dataStore);
     specification.evaluate();

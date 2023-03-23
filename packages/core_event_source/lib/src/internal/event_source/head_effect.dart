@@ -16,6 +16,10 @@ class HeadEffect<Event> with _$HeadEffect<Event> {
   @Assert('entries.isNotEmpty')
   factory HeadEffect.reset(EntryRef start, Iterable<EntryRef> base,
       Iterable<Entry<Event>> entries) = HeadEffectReset<Event>;
+  @Assert('entries.isNotEmpty')
+  factory HeadEffect.merge(
+      EntryRef start, Iterable<EntryRef> base, Iterable<Entry<Event>> entries,
+      {required Entry<Event> entry}) = HeadEffectMerge<Event>;
 
   factory HeadEffect.none() = HeadEffectNone;
 }

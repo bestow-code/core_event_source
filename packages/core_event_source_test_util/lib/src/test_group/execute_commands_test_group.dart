@@ -25,60 +25,68 @@ class ExecuteCommandsTestGroup extends IntegrationTestGroup {
       setUp(() async =>
           source1 = await build(eventStore, sourcePath, headRefName1));
 
-      blocTest2(
+      blocTest(
         'execute command',
         build: () => source1,
         act: (_) async {
           source1.start();
           await source1.isReady;
-          source1.execute([{}]);
+          source1.execute([FakeCommand()]);
         },
         wait: const Duration(milliseconds: 10),
-        expect: () => [1, 2],
+        expect: () => [FakeView(2)],
       );
-      blocTest2(
+      blocTest(
         'execute two command, same execution',
         build: () => source1,
         act: (_) async {
           source1.start();
           await source1.isReady;
-          source1.execute([{}, {}]);
+          source1.execute([FakeCommand(), FakeCommand()]);
         },
         wait: const Duration(milliseconds: 10),
-        expect: () => [1, 4],
+        expect: () => [FakeView(4)],
       );
-      blocTest2(
+      blocTest(
         'execute two command, same instance',
         build: () => source1,
         act: (_) async {
           source1.start();
           await source1.isReady;
-          source1.execute([{}]);
-          source1.execute([{}]);
+          source1.execute([FakeCommand()]);
+          source1.execute([FakeCommand()]);
         },
         wait: const Duration(milliseconds: 10),
-        expect: () => [1, 2, 4],
+        expect: () => [FakeView(2), FakeView(4)],
+        // expect: () => [1, FakeView(2, FakeView(4)],
       );
-      blocTest2(
+      blocTest(
         'execute commands on separate source instances, in sequence',
         setUp: () async {
           source1.start();
           await source1.isReady;
           final done = source1.stream.take(1).first;
-          source1.execute([{}]);
+          source1.execute([FakeCommand()]);
           await done;
           await source1.close();
           source1 = await build(eventStore, sourcePath, headRefName1);
+          print(source1.state);
+          print(source1.state);
         },
         build: () => source1,
         act: (_) async {
+          print(source1.state);
+
           source1.start();
           await source1.isReady;
-          source1.execute([{}]);
-          source1.execute([{}]);
+          print(source1.state);
+          source1.execute([FakeCommand()]);
+          print(source1.state);
+          source1.execute([FakeCommand()]);
+          print(source1.state);
         },
         wait: const Duration(milliseconds: 10),
-        expect: () => [1, 2, 4, 8],
+        expect: () => [FakeView(2), FakeView(4), FakeView(8)],
         tearDown: () async => await source1.close(),
       );
     });

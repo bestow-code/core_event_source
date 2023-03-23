@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart' hide EventHandler;
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -55,7 +56,9 @@ class EventSourceInternal<Command, Event, State>
               _entryCollection.buildInitialHeadEffect(initial.headEntryRef),
               emit),
           ready: (ready) async => await _handleHeadEffect(
-              _entryCollection.buildMergeHeadEffect(ready.entryRef), emit)),
+              _entryCollection.buildMergeHeadEffect(
+                  ready.entryRef, _entryFactory),
+              emit)),
       transformer: sequential(),
     );
   }
@@ -64,12 +67,25 @@ class EventSourceInternal<Command, Event, State>
     subscription = _entryCollection.stream.listen((_) {
       add(EventSourceEvent.entryCollectionUpdate());
     });
+    _stateValue.start();
     _entryCollection.start();
   }
 
-  Future<bool> get isReady => stream
-      .firstWhere((element) => element.mapOrNull(ready: (_) => true) ?? false)
-      .then((_) => true);
+  @override
+  Future<void> close() async {
+    await subscription.cancel();
+    await super.close();
+    await _entryCollection.close();
+    await _dispatcher.close();
+    await _stateValue.close();
+  }
+
+  Future<bool> get isReady => state.maybeMap(
+      orElse: () => stream
+          .firstWhere(
+              (element) => element.mapOrNull(ready: (_) => true) ?? false)
+          .then((_) => true),
+      ready: (_) async => true);
 
   @override
   @protected
@@ -81,22 +97,16 @@ class EventSourceInternal<Command, Event, State>
 
   Future<void> _handleHeadEffect(
       HeadEffect<Event> headEffect, Emitter<EventSourceState> emit) async {
+    log('dispatching', error: headEffect);
     await _dispatcher.dispatch(headEffect);
     emit(headEffect.map(
         append: (append) => EventSourceState.ready(append.entry.ref),
         forward: (forward) => EventSourceState.ready(forward.entries.last.ref),
         reset: (reset) => EventSourceState.ready(reset.entries.last.ref),
+        merge: (merge) => EventSourceState.ready(merge.entries.last.ref),
         none: (none) => state));
   }
 
   void execute(Iterable<Command> commands) =>
       add(EventSourceEvent.commandsApply(commands));
-  @override
-  Future<void> close() async {
-    await subscription.cancel();
-    await super.close();
-    await _entryCollection.close();
-    await _dispatcher.close();
-    await _stateValue.close();
-  }
 }

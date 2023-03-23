@@ -2,29 +2,25 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:core_event_source/entry.dart';
 import 'package:core_event_source/internal.dart';
 import 'package:core_event_source_test_util/core_event_source_test_util.dart';
-
 // import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-import '../event_source_impl/test_common.dart';
+class MockJournal extends Mock implements Journal<FakeEvent> {}
 
-class MockJournal extends Mock implements Journal<Event> {}
-
-class MockEntryCollection
-    extends MockBloc<EntryCollection<Event>, EntryCollectionState<Event>>
-    implements EntryCollection<FakeEvent> {}
+class MockEntryCollection extends MockBloc<EntryCollection<FakeEvent>,
+    EntryCollectionState<FakeEvent>> implements EntryCollection<FakeEvent> {}
 
 class MockEntryCollectionState extends Mock
-    implements EntryCollectionState<Event> {}
+    implements EntryCollectionState<FakeEvent> {}
 
 class MockEventSourceInternal extends Mock
-    implements EventSourceInternal<Command, Event, State> {}
+    implements EventSourceInternal<FakeCommand, FakeEvent, FakeState> {}
 
 main() {
   // # Subject
   // late MainRefUpdateDispatcherImpl mainRefUpdateDispatcherImpl;
-  late MainRefEffect<Event> initialState;
+  late MainRefEffect<FakeEvent> initialState;
 
   // # Mock Dependencies
   late MockJournal _journal;
@@ -38,14 +34,14 @@ main() {
     initialState = MainRefEffect.none();
   });
 
-  MainRefUpdateDispatcherImpl<Command, Event, State> build() =>
-      MainRefUpdateDispatcherImpl<Command, Event, State>(
+  MainRefUpdateDispatcherImpl<FakeCommand, FakeEvent, FakeState> build() =>
+      MainRefUpdateDispatcherImpl<FakeCommand, FakeEvent, FakeState>(
           initialState, _journal, _source, _entryCollection);
 
   group('MainRefUpdateDispatcherImpl', () {
     group('given a path forward available', () {
       EntryRef entryRef1 = EntryRef('ref1');
-      late MainRefEffect<Event> mainRefEffect;
+      late MainRefEffect<FakeEvent> mainRefEffect;
 
       setUp(() {
         mainRefEffect =
