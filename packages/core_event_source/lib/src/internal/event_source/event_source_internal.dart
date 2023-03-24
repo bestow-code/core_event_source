@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart' hide EventHandler;
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -97,7 +96,7 @@ class EventSourceInternal<Command, Event, State>
 
   Future<void> _handleHeadEffect(
       HeadEffect<Event> headEffect, Emitter<EventSourceState> emit) async {
-    log('dispatching', error: headEffect);
+    log.info('dispatching', headEffect);
     await _dispatcher.dispatch(headEffect);
     emit(headEffect.map(
         append: (append) => EventSourceState.ready(append.entry.ref),

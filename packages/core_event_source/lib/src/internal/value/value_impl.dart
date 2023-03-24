@@ -144,7 +144,6 @@ class _ValueStreamableSource<T> extends BlocBase<T> {
   void start() {
     subscription = _stream.listen((v) {
       emit(v);
-      print(v);
     });
   }
 

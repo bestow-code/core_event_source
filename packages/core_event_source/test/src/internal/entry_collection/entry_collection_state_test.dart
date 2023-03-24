@@ -1,6 +1,6 @@
 import 'package:core_event_source/common.dart';
-import 'package:core_event_source/internal.dart';
 import 'package:core_event_source/entry.dart';
+import 'package:core_event_source/internal.dart';
 import 'package:directed_graph/directed_graph.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -70,9 +70,7 @@ main() {
         entrySnapshotsStream:
             entrySnapshotsStream as Stream<Iterable<EntrySnapshot<Event>>>,
         onError: (e, s) {
-          print(e.toString());
-          print(s.toString());
-          // debugPrintStack(label: e.toString(), stackTrace: s);
+          printOnFailure(e.toString());
         },
       );
     }

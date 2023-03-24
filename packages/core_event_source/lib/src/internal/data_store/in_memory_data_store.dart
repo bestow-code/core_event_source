@@ -63,9 +63,9 @@ class InMemoryDataStore<Event> implements CoreDataStore<Event> {
   void setMainEntryRef(EntryRef ref) => _internal.setMainEntryRef(ref);
 
   @override
-  Future<void> appendMergeEntry(Entry<Event> entry, HeadEntryRef headEntryRef) {
-    // TODO: implement appendMergeEntry
-    throw UnimplementedError();
+  Future<void> appendMergeEntry(
+      Entry<Event> entry, HeadEntryRef headEntryRef) async {
+    await _internal.appendMergeEntry(entry, headEntryRef);
   }
 }
 
@@ -158,4 +158,11 @@ class InMemoryDataStoreInternal<Event> {
   Stream<EntryRef> get mainEntryRefStream => _mainRefSnapshots.stream;
 
   Future<Entry<Event>> get rootEntry async => _rootEntry;
+
+  Future<void> appendMergeEntry(
+      Entry<Event> entry, HeadEntryRef headEntryRef) async {
+    _entryCollectionSnapshots.add([EntrySnapshot(entry, isPending: true)]);
+    await Future.delayed(Duration.zero);
+    _entryCollectionSnapshots.add([EntrySnapshot(entry, isPending: false)]);
+  }
 }

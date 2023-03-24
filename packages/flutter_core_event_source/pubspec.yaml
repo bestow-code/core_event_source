@@ -29,6 +29,8 @@ dependencies:
   freezed_annotation:
   json_annotation: ^4.8.0
   rxdart:
+  core_logging:
+    path: ../core_logging
   logging:
   meta:
 

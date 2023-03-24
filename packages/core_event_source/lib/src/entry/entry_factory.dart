@@ -11,9 +11,11 @@ class EntryFactory<Event> {
         dateTimeFactory: DateTimeFactory.now(),
       );
 
-  factory EntryFactory.increment([int start = 0]) => EntryFactory(
-      entryRefFactory: EntryRefFactory.increment(start),
-      dateTimeFactory: DateTimeFactory.increment(start));
+  factory EntryFactory.increment([int? start]) {
+    return EntryFactory(
+        entryRefFactory: EntryRefFactory.increment(start ?? 0),
+        dateTimeFactory: DateTimeFactory.increment(start ?? 0));
+  }
 
   EntryFactory({
     required this.entryRefFactory,
@@ -37,10 +39,11 @@ class DateTimeFactory {
 
   factory DateTimeFactory.now() => DateTimeFactory(DateTime.now);
 
-  factory DateTimeFactory.increment([int start = 0]) {
+  factory DateTimeFactory.increment([int? start]) {
+    var _start = start ?? 0;
     return DateTimeFactory(() {
-      start = start + 1;
-      return DateTime.fromMillisecondsSinceEpoch(start);
+      _start = _start + 1;
+      return DateTime.fromMillisecondsSinceEpoch(_start);
     });
   }
 

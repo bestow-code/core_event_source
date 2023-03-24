@@ -27,8 +27,6 @@ class EventSourceImpl<Command, Event, State, View> extends BlocBase<View>
 
   void start() {
     _subscription = _viewValue.source.stream.listen((v) {
-      print(
-          "************************************************************************");
       emit(v);
     });
     _viewValue.start();

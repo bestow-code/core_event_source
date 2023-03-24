@@ -70,20 +70,13 @@ class ExecuteCommandsTestGroup extends IntegrationTestGroup {
           await done;
           await source1.close();
           source1 = await build(eventStore, sourcePath, headRefName1);
-          print(source1.state);
-          print(source1.state);
         },
         build: () => source1,
         act: (_) async {
-          print(source1.state);
-
           source1.start();
           await source1.isReady;
-          print(source1.state);
           source1.execute([FakeCommand()]);
-          print(source1.state);
           source1.execute([FakeCommand()]);
-          print(source1.state);
         },
         wait: const Duration(milliseconds: 10),
         expect: () => [FakeView(2), FakeView(4), FakeView(8)],

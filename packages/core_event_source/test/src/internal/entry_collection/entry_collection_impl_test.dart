@@ -47,6 +47,7 @@ main() {
   // late Entry<Event> headEntry;
 
   late EntryFactory<Event> entryFactory;
+  late EntryFactory<Event> entryFactory2;
 
   initialize(
     EntryFactory<Event> factory,
@@ -77,9 +78,7 @@ main() {
       rootEntry,
       mainEntryRef,
       onError: (e, s) {
-        print(e.toString());
-        print(s.toString());
-        // debugPrintStack(label: e.toString(), stackTrace: s);
+        printOnFailure(e.toString());
       },
       mainEntryRefStream: mainEntryRefStream,
       entrySnapshotsStream: entrySnapshotsStream,
@@ -89,6 +88,7 @@ main() {
 
   group('Entry Collection', () {
     setUp(() => entryFactory = EntryFactory.increment());
+    setUp(() => entryFactory2 = EntryFactory.increment());
     group('apply entry', () {
       blocTest(
         'apply entry',
@@ -148,6 +148,9 @@ main() {
     });
 
     group('buildFollowMainEffect', () {
+      // setUp(() => entryFactory = EntryFactory.increment(4));
+      // setUp(() => entryFactory2 = EntryFactory.increment(4));
+
       blocTest('headEntryRef == mainEntryRef',
           setUp: () {
             initialize(
@@ -202,6 +205,11 @@ main() {
           });
       blocTest('headEntryRef and mainEntryRef diverged',
           setUp: () {
+            entryFactory = EntryFactory.increment();
+            entryFactory2 = EntryFactory.increment();
+            entryFactory2.create(refs: [], events: []);
+            entryFactory2.create(refs: [], events: []);
+            entryFactory2.create(refs: [], events: []);
             initialize(
               entryFactory,
               'b',
@@ -211,18 +219,27 @@ main() {
                 'c': {'a'}
               },
             );
+            // entryFactory.dateTimeFactory.create();
+            // entryFactory2.dateTimeFactory.create();
           },
           build: () => entryCollection,
           verify: (entryCollection) {
+            final mergeEntry = entryFactory2.create(refs: [
+              EntryRef('c'),
+              EntryRef('b'),
+            ], events: []);
             expect(
                 entryCollection.buildMergeHeadEffect(
                     const EntryRef('c'), entryFactory),
-                HeadEffect<Event>.reset(const EntryRef('c'), [
-                  const EntryRef('a')
-                ], [
-                  entries[const EntryRef('b')]!,
-                  entries[const EntryRef('c')]!,
-                ]));
+                HeadEffect<Event>.merge(
+                    const EntryRef('c'),
+                    [const EntryRef('a')],
+                    [
+                      entries[const EntryRef('b')]!,
+                      entries[const EntryRef('c')]!,
+                      mergeEntry,
+                    ],
+                    entry: mergeEntry));
           });
       blocTest('mainEntryRef ahead of headEntryRef ',
           setUp: () {
@@ -264,22 +281,22 @@ main() {
                 HeadEffect<Event>.none());
           });
     });
-  });
-  group('updates stream', () {
-    blocTest<BlocBase<void>, void>(
-      'emits',
-      setUp: () {
-        initialize(
-          entryFactory,
-          'a',
-          {'a': {}},
-        );
-      },
-      build: () => entryCollection.updates,
-      act: (_) => entryCollection.apply(HeadEffect.append(const EntryRef('a'),
-          entryFactory.create(refs: [const EntryRef('a')], events: []))),
-      expect: () => [isA<EntryCollectionState>()],
-    );
+    group('updates stream', () {
+      blocTest<BlocBase<void>, void>(
+        'emits',
+        setUp: () {
+          initialize(
+            entryFactory,
+            'a',
+            {'a': {}},
+          );
+        },
+        build: () => entryCollection.updates,
+        act: (_) => entryCollection.apply(HeadEffect.append(const EntryRef('a'),
+            entryFactory.create(refs: [const EntryRef('a')], events: []))),
+        expect: () => [isA<EntryCollectionState>()],
+      );
+    });
   });
 }
 

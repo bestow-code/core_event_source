@@ -17,8 +17,9 @@ class IdFactory {
 
   factory IdFactory.random() => IdFactory(AutoIdGenerator.autoId);
   factory IdFactory.increment([int start = 0]) => IdFactory(() {
-        start = start + 1;
-        return start.toString();
+        var _start = start;
+        _start = _start + 1;
+        return _start.toString();
       });
 
   IdFactory(this._create);

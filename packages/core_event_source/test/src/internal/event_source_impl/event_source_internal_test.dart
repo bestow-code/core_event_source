@@ -45,8 +45,12 @@ main() {
   buildMocks() {
     commandProcessor = MockCommandProcessor();
     stateValue = MockValueImpl<FakeState>();
+    when(() => stateValue.close()).thenAnswer((invocation) async => null);
     entryCollection = MockEntryCollectionImpl();
+    when(() => entryCollection.close()).thenAnswer((invocation) async => null);
+
     dispatcher = MockHeadEffectDispatcher();
+    when(() => dispatcher.close()).thenAnswer((invocation) async => null);
   }
 
   buildEventSource() {
@@ -58,6 +62,7 @@ main() {
       entryCollection: entryCollection,
       onUpdate: entryCollection.stream,
     );
+    internal.start();
   }
 
   group('EventSourceInternal', () {
