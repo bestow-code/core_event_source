@@ -1,0 +1,67 @@
+name: core_event_source
+description: A very good flutter package
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.19.0 <3.0.0"
+
+dependencies:
+  async:
+  bloc:
+  bloc_concurrency:
+  collection:
+  debounce_throttle:
+  directed_graph:
+  freezed_annotation:
+  json_annotation: ^4.8.0
+  rxdart:
+  logging:
+  meta:
+  core_event_source_test_util:
+    path: ../core_event_source_test_util
+dev_dependencies:
+  test:
+  bloc_test:
+  build_runner:
+  lints: ^2.0.1
+  freezed:
+  json_serializable:
+  matcher:
+  mocktail: ^0.3.0
+  given_when_then_unit_test:
+#  core_event_source_test_util:
+#    path: ../core_event_source_test_util
+#  core_event_source_test:
+  melos: ^3.0.0
+
+index_generator:
+  exclude:
+    - '**.*.dart'
+  indexes:
+    - path: lib
+      name: common
+      include:
+        - src/common
+    - path: lib
+      name: entry
+      include:
+        - src/entry
+    - path: lib
+      name: event_source
+      include:
+        - src/event_source
+    - path: lib
+      name: event_sourced_behavior
+      include:
+        - src/event_sourced_behavior
+
+    - path: lib
+      name: internal
+      include:
+        - src/internal
+
+    - path: test
+      name: test_doubles
+      include:
+        - test_doubles

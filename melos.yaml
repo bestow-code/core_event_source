@@ -12,7 +12,7 @@ command:
 
 packages:
   - '.'
-
+  - 'packages/*'
 
 scripts:
 
@@ -30,27 +30,14 @@ scripts:
       melos exec -c 30 -- \
         flutter pub global run index_generator
 
-  build:
-    run: multipack pub run build_runner build
-
   watch:
     run: |
       melos exec --depends-on=build_runner -c 35 \
-        --scope=core_* --include-dependencies \
-        -- \
-        flutter pub run build_runner watch --delete-conflicting-outputs
-  watch:ref:
-    run: |
-      melos exec --depends-on=build_runner -c 10 
-        --scope="*_spec" --scope="*_example" \
+        --include-dependencies \
         -- \
         flutter pub run build_runner watch --delete-conflicting-outputs
 
-  test:
-    run: |
-      melos exec  -c 5 \
-        --dir-exists="test" \
-        -- flutter test --branch-coverage test
+
   test:flutter:
     run: |
       melos exec \
@@ -78,6 +65,114 @@ scripts:
   test:integration:
     run: |
       melos exec \
-        --flutter \
         --dir-exists="integration_test" \
-        -- flutter test integration_test
+        -- very_good test --coverage integration_test
+
+  test:test:
+    run: |
+      melos exec \
+        --dir-exists="test" \
+        --ignore flutter_core_event_source \
+        -- very_good test --coverage test
+
+  # From FlutterFire
+
+
+  lint:all:
+    run: melos run analyze && melos run format
+    description: Run all static analysis checks.
+
+  analyze:
+    # We are setting the concurrency to 1 because a higher concurrency can crash
+    # the analysis server on low performance machines (like GitHub Actions).
+    run: |
+      melos exec -c 1 -- \
+        dart analyze . --fatal-infos
+    description: |
+      Run `dart analyze` in all packages.
+       - Note: you can also rely on your IDEs Dart Analysis / Issues window.
+
+  firebase:emulator:
+    run: |
+      cd .github/workflows/scripts && ./start-firebase-emulator.sh
+    description: |
+      Start the Firebase emulator suite. Used by Functions, Firestore, Auth and Storage
+      integration testing.
+       - Requires Node.js and NPM installed.
+
+  format:
+    run: |
+      dart pub global run flutter_plugin_tools format
+
+  test:all:
+    run: |
+      melos run test --no-select && \
+      melos run test:web --no-select && \
+      melos run test:e2e --no-select
+    description: |
+      Run all tests available.
+
+  test:
+    run: |
+      melos exec -c 6 --fail-fast -- \
+        "flutter test"
+    description: Run `flutter test` for a specific package.
+    packageFilters:
+      dirExists:
+        - test
+      ignore:
+        - '*web*'
+        - '*odm*'
+        - '*example*'
+
+  test:web:
+    run: |
+      melos exec -c 1 --fail-fast -- \
+        "flutter test --platform=chrome"
+    description: Run `flutter test --platform=chrome` for a specific '*web' package.
+    packageFilters:
+      dirExists:
+        - test
+      scope: '*web*'
+
+  test:e2e:
+    run: |
+      melos exec -c 1 --fail-fast -- \
+        "flutter test integration_test/e2e_test.dart"
+    description: |
+      Run all e2e tests.
+    packageFilters:
+      dirExists:
+        - integration_test
+      scope: '*tests*'
+
+  test:e2e:web:
+    run: |
+      melos exec -c 1 --fail-fast -- \
+        "flutter drive --target=./integration_test/e2e_test.dart --driver=./test_driver/integration_test.dart -d chrome"
+    description: |
+      Run all e2e tests on web platform. Please ensure you have "chromedriver" installed and running.
+    packageFilters:
+      dirExists:
+        - test_driver
+      scope: '*tests*'
+
+  clean:deep:
+    run: git clean -x -d -f -q
+    description: Clean things very deeply, can be used to establish "pristine checkout" status.
+
+  qualitycheck:
+    run: |
+      melos run clean:deep && \
+      melos clean && \
+      melos bootstrap && \
+      melos run lint:all && \
+      melos run build:all && \
+      melos run test:all
+    description: Run all targets generally expected in CI for a full local quality check.
+
+
+
+  # Additional cleanup lifecycle script, executed when `melos clean` is run.
+  postclean: >
+    melos exec -c 6 -- "flutter clean"

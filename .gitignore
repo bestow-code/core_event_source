@@ -41,3 +41,4 @@ app.*.map.json
 
 # Test related
 coverage
+pubspec_overrides.yaml

@@ -1,0 +1,16 @@
+name: Semantic Pull Request
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  semantic_pull_request:
+    name: Verify Semantic Pull Request
+    uses: ./.github/workflows/semantic_pull_request.yml
