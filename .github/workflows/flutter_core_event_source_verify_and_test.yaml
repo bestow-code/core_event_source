@@ -26,7 +26,6 @@ jobs:
   verify_and_test:
     name: Verify and Test
     uses: "core-form-fit/very_good_workflows/.github/workflows/flutter_package.yml@v1"
-#
 #    uses: ./.github/workflows/flutter_package.yml
     with:
       working_directory: packages/flutter_core_event_source
